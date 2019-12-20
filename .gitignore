@@ -1,0 +1,6 @@
+node_modules
+postgres
+app.js
+docker-compose.yml
+Dockerfile
+package-lock.json

@@ -1,0 +1,26 @@
+{
+  "name": "pg-models",
+  "description": "Models & Query Builder for Postgresql",
+  "version": "0.1",
+  "repository": "git://github.com/Medsaad/pg-models",
+  "main": "lib/index.js",
+  "keywords": [
+    "Postgresql",
+    "ORM",
+    "models",
+    "query",
+    "SQL"
+  ],
+  "files": [
+    "lib"
+  ],
+  "dependencies": {
+     "pg": "^7.10.0"
+  },
+  "devDependencies": {
+
+  },
+  "scripts": {
+  },
+  "license": "MIT"
+}
