@@ -3,7 +3,11 @@
   "description": "Models & Query Builder for Postgresql",
   "version": "0.1",
   "repository": "git://github.com/Medsaad/pg-models",
-  "main": "lib/index.js",
+  "main": "index.js",
+  "author": {
+    "name": "Ahmed Saad Zaghloul",
+    "email": "ahmedthegicoder@gmail.com"
+  },
   "keywords": [
     "Postgresql",
     "ORM",
@@ -11,8 +15,12 @@
     "query",
     "SQL"
   ],
+  "engines": {
+    "node": ">= 8.17.0"
+  },
   "files": [
-    "lib"
+    "lib",
+    "index.js"
   ],
   "dependencies": {
      "pg": "^7.10.0"
