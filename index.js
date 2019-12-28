@@ -1,4 +1,4 @@
-const pgConnection = require("./lib/connection");
+const Connection = require("./lib/connection");
 const Model = require("./lib/model");
 
 /**
@@ -9,4 +9,4 @@ const Model = require("./lib/model");
  * README.md file in the root directory of this source tree.
  */
 
-module.exports = { pgConnection, Model };
+module.exports = { Connection, Model };
