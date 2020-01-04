@@ -1,5 +1,5 @@
 {
-  "name": "pg-models",
+  "name": "node-db-models",
   "description": "Models & Query Builder for Postgresql",
   "version": "0.1",
   "repository": "git://github.com/Medsaad/pg-models",
@@ -9,11 +9,12 @@
     "email": "ahmedthegicoder@gmail.com"
   },
   "keywords": [
-    "Postgresql",
+    "postgres",
+    "mysql",
     "ORM",
     "models",
     "query",
-    "SQL"
+    "sql"
   ],
   "engines": {
     "node": ">= 8.17.0"
@@ -23,10 +24,8 @@
     "index.js"
   ],
   "dependencies": {
-     "pg": "^7.10.0"
   },
   "devDependencies": {
-
   },
   "scripts": {
   },
