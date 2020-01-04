@@ -3,7 +3,7 @@
 Created: Jan 04, 2020 1:00 PM
 Created By: Ahmed saad
 Last Edited By: Ahmed saad
-Last Edited Time: Jan 04, 2020 1:21 PM
+Last Edited Time: Jan 04, 2020 1:25 PM
 
 # node-db-models npm package
 
@@ -32,7 +32,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
         const { Connection, Model } = require('node-db-models');
           Connection.attach({
               connection: pgModConn,
-              type: 'pg'
+                  type: 'pg'
           });
 
 - Create models for the tables:
@@ -43,8 +43,8 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
 
 - Create an object of that class and start building queries:
 
-        let page = new Page();
-          let postResults = page.select(['title', 'body', 'created_at::date'])
+        let post = new Post();
+        let postResults = post.select(['title', 'body', 'created_at::date'])
                .where([
                   ["created_at", ">", "2019-01-01" ], //also !=, like, ilike
                      ])
@@ -58,7 +58,14 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
     - `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations.
     - `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
     - `groupBy(groupList)`: accepts a list of columns you can group by.
-- After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned. All the following functions return a promise:
+- After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
+
+        postResults.list().then(data => {
+            console.log(data);
+        });
+
+    All the following functions return a promise:
+
     - `.list()`: lists all results found in the form of array of objects.
     - `col(column_name)`: returns an array of values of a certain column.
     - `listAfter(offset)`: skip an *offset* amount of  values and then list all values after it.
