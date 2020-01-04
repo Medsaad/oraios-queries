@@ -25,7 +25,7 @@ Currently, it's only getting tested with postgres package ([node-postgres](https
 
         Connection.attach({
         	connection: pgModConn,
-          type: 'pg'
+                type: 'pg'
         });
 
 - Create models for the tables:
@@ -39,7 +39,7 @@ Currently, it's only getting tested with postgres package ([node-postgres](https
         let page = new Page();
         let postResults = page.select(['title', 'body', 'created_at::date'])
              .where([
-        				["created_at", ">", "2019-01-01" ], //also !=, like, ilike
+        		["created_at", ">", "2019-01-01" ], //also !=, like, ilike
                    ])
               .orderBy([
                  {col: 'id', order: 'desc'});
