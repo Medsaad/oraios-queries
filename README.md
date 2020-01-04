@@ -1,10 +1,3 @@
-# README
-
-Created: Jan 04, 2020 1:00 PM
-Created By: Ahmed saad
-Last Edited By: Ahmed saad
-Last Edited Time: Jan 04, 2020 1:25 PM
-
 # node-db-models npm package
 
 ## Summary
