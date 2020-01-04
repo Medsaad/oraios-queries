@@ -11,7 +11,6 @@ Currently, it's only getting tested with postgres package ([node-postgres](https
 - Connect to your database using pg package:
 
         const Pg = require("pg");
-        const { Connection, Model } = require('pg-models');
         
         let pgModConn = new Pg.Pool({
         	host: '127.0.0.1',
@@ -23,6 +22,7 @@ Currently, it's only getting tested with postgres package ([node-postgres](https
 
 - Attach your connection with pg-models:
 
+        const { Connection, Model } = require('node-db-models');
         Connection.attach({
         	connection: pgModConn,
                 type: 'pg'
@@ -41,7 +41,7 @@ Currently, it's only getting tested with postgres package ([node-postgres](https
              .where([
         		["created_at", ">", "2019-01-01" ], //also !=, like, ilike
                    ])
-              .orderBy([
+             .orderBy([
                  {col: 'id', order: 'desc'});
 
 Copyright (c) 2019-2020 Ahmed Saad Zaghloul (ahmedthegicoder@gmail.com)
