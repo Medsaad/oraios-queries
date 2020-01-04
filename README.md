@@ -25,7 +25,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
         const { Connection, Model } = require('node-db-models');
           Connection.attach({
               connection: pgModConn,
-                  type: 'pg'
+              type: 'pg'
           });
 
 - Create models for the tables:
