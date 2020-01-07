@@ -96,7 +96,7 @@ postResults.then(data => {
         console.log(error);
 });
 ```
-    The previous statement will produce a query like this:
+The previous statement will produce a query like this:
 ```
         SELECT created_at::date, count(*) as posts 
         FORM posts 
