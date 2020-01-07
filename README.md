@@ -46,7 +46,7 @@ $ npm install --save node-db-models
                    {col: 'id', order: 'desc'}
                      ]);
 ```
-    You can chain the following methods to your model object:
+You can chain the following methods to your model object:
 
     - `.select(columns):` passes an array of columns to your query builder.
     - `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` where the last one - `in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
@@ -58,7 +58,7 @@ $ npm install --save node-db-models
             console.log(data);
         });
 ```
-    All the following functions return a promise:
+All the following functions return a promise:
 
     - `.list()`: lists all results found in the form of array of objects.
     - `col(column_name)`: returns an array of values of a certain column.
@@ -70,9 +70,9 @@ $ npm install --save node-db-models
     - `paginate(perPage, currentPage)`: paginate through your results by passing rows per page and your current page.
     - `chunk(count, callback)`: instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.
 
-    ## Advanced Example
+## Advanced Example
 
-    adding conditions using AND & OR with grouping:
+Adding conditions using AND & OR with grouping:
 ```javascript
 let post = new Post();
 let postResults = post.select(['created_at::date', 'count(*) as posts'])
