@@ -97,7 +97,7 @@ postResults.then(data => {
 });
 ```
     The previous statement will produce a query like this:
-
+```
         SELECT created_at::date, count(*) as posts 
         FORM posts 
         WHERE (
@@ -110,6 +110,7 @@ postResults.then(data => {
         ) 
         GROUP BY created_at::date 
         ORDER BY created_at::date desc;
+```
 
 ## Current work on progress
 
