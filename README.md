@@ -1,8 +1,8 @@
-# node-db-models npm package
+# Node Relational Database Models (NRDBM)
 
 ## Summary
 
-pg-models is a project aims to create an ORM for RDBMS to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
+NRDBM is a project aims to create an ORM for Databases queries (especially Relational Databases) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
 
 Currently, it’s only getting tested with postgres package ([node-postgres](https://www.npmjs.com/package/pg)) but will be expanded to [mysql](https://www.npmjs.com/package/mysql) very soon.
 
@@ -38,9 +38,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
 
         let post = new Post();
         let postResults = post.select(['title', 'body', 'created_at::date'])
-               .where([
-                  ["created_at", ">", "2019-01-01" ], //also !=, like, ilike
-                     ])
+               .where(["created_at", ">", "2019-01-01" ])
                .orderBy([
                    {col: 'id', order: 'desc'}
                      ]);
@@ -48,7 +46,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
     You can chain the following methods to your model object:
 
     - `.select(columns):` passes an array of columns to your query builder.
-    - `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations.
+    - `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` where the last one - `in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
     - `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
     - `groupBy(groupList)`: accepts a list of columns you can group by.
 - After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
@@ -68,5 +66,50 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
     - `first(count)`: return the first amount of rows that meets conditions specified.
     - `paginate(perPage, currentPage)`: paginate through your results by passing rows per page and your current page.
     - `chunk(count, callback)`: instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.
+
+    ## Advanced Example
+
+    adding conditions using AND & OR with grouping:
+
+        let post = new Post();
+        let postResults = post.select(['created_at::date', 'count(*) as posts'])
+                .where({
+        				relation: 'AND',
+        	            cond: [
+        						["created_at::date", ">", "2019-01-01" ],
+                                ["author_id", "=", 25 ],
+        						{
+        							relation: 'OR',
+        								cond: [
+        									['created_at::date', ">", "2019-05-01"],
+        									['created_at::date', "<", "2019-10-01"],
+        								]
+        						}
+        			})
+                .groupBy(['created_at::date'])
+        	    .orderBy([{col: 'created_at::date', order: 'desc'}]);
+
+    The previous statement will produce a query like this:
+
+        SELECT created_at::date, count(*) as posts 
+        FORM posts 
+        WHERE (
+          created_at::date > "2019-01-01" AND 
+          author_id, "=", 25 AND
+        	(
+        		created_at::date > "2019-05-01" OR
+                created_at::date < "2019-10-01"
+        	)
+        ) 
+        GROUP BY created_at::date 
+        ORDER BY created_at::date desc;
+
+## Current work on progress
+
+The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
+
+- Insert, Update, and Delete items to a table.
+- Apply table joins.
+- Support MySQL.
 
 Copyright (c) 2019-2020 Ahmed Saad Zaghloul (ahmedthegicoder@gmail.com) MIT License
