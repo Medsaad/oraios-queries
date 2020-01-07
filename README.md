@@ -2,7 +2,7 @@
 
 ## Summary
 
-NRDBM is a project aims to create an ORM for Databases queries (especially Relational Databases) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
+NRDBM is a light-weighted project aims to create an ORM for Databases queries (especially Relational Databases) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
 
 Currently, it’s only getting tested with postgres package ([node-postgres](https://www.npmjs.com/package/pg)) but will be expanded to [mysql](https://www.npmjs.com/package/mysql) very soon.
 
@@ -13,50 +13,50 @@ $ npm install --save node-db-models
 ```
 - Connect to your database using pg package:
 ```javascript
-        const Pg = require("pg");
-        
-          let pgModConn = new Pg.Pool({
-              host: '127.0.0.1',
-              user: 'admin',
-              database: 'sampledb',
-              password: '*******',
-              port: 5432
-          });
+const Pg = require("pg");
+
+let pgModConn = new Pg.Pool({
+        host: '127.0.0.1',
+        user: 'admin',
+        database: 'sampledb',
+        password: '*******',
+        port: 5432
+});
 ```
 - Attach your connection with pg-models:
 ```javascript
-        const { Connection, Model } = require('node-db-models');
-          Connection.attach({
-              connection: pgModConn,
-              type: 'pg'
-          });
+const { Connection, Model } = require('node-db-models');
+Connection.attach({
+        connection: pgModConn,
+        type: 'pg'
+});
 ```
 - Create models for the tables:
 ```javascript
-        class Post extends Model {
-            table_name = 'posts'
-          }
+class Post extends Model {
+        table_name = 'posts'
+}
 ```
 - Create an object of that class and start building queries:
 ```javascript
-        let post = new Post();
-        let postResults = post.select(['title', 'body', 'created_at::date'])
-               .where(["created_at", ">", "2019-01-01" ])
-               .orderBy([
-                   {col: 'id', order: 'desc'}
-                     ]);
+let post = new Post();
+let postResults = post.select(['title', 'body', 'created_at::date'])
+        .where(["created_at", ">", "2019-01-01" ])
+        .orderBy([
+                {col: 'id', order: 'desc'}
+        ]);
 ```
 You can chain the following methods to your model object:
 - `.select(columns):` passes an array of columns to your query builder.
-- `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` where the last one - `in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
+- `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
 - `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
     
 - After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
 ```javascript
-        postResults.list().then(data => {
-            console.log(data);
-        });
+postResults.list().then(data => {
+        console.log(data);
+});
 ```
 All the following functions return a promise:
 - `.list()`: lists all results found in the form of array of objects.
@@ -100,18 +100,18 @@ postResults.then(data => {
 ```
 The previous statement will produce a query like this:
 ```sql
-        SELECT created_at::date, count(*) as posts 
-        FORM posts 
-        WHERE (
-          created_at::date > "2019-01-01" AND 
-          author_id, "=", 25 AND
-        	(
-        		created_at::date > "2019-05-01" OR
-            created_at::date < "2019-10-01"
-        	)
-        ) 
-        GROUP BY created_at::date 
-        ORDER BY created_at::date desc;
+SELECT created_at::date, count(*) as posts 
+FORM posts 
+WHERE (
+        created_at::date > "2019-01-01" AND 
+        author_id, "=", 25 AND
+        (
+                created_at::date > "2019-05-01" OR
+        created_at::date < "2019-10-01"
+        )
+) 
+GROUP BY created_at::date 
+ORDER BY created_at::date desc;
 ```
 
 ## Current work on progress
