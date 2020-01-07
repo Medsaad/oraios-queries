@@ -70,7 +70,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
     ## Advanced Example
 
     adding conditions using AND & OR with grouping:
-
+```
         let post = new Post();
         let postResults = post.select(['created_at::date', 'count(*) as posts'])
                .where({
@@ -85,11 +85,11 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
         												['created_at::date', "<", "2019-10-01"],
         										]
         									}
-        							], //also =, !=, like, ilike
+        							]
         						})
                .groupBy(['created_at::date'])
         			 .orderBy([{col: 'created_at::date', order: 'desc'}]);
-
+```
     The previous statement will produce a query like this:
 
         SELECT created_at::date, count(*) as posts 
@@ -99,7 +99,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
           author_id, "=", 25 AND
         	(
         		created_at::date > "2019-05-01" OR
-                created_at::date < "2019-10-01"
+            created_at::date < "2019-10-01"
         	)
         ) 
         GROUP BY created_at::date 
