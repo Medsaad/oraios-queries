@@ -71,24 +71,30 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
 
     adding conditions using AND & OR with grouping:
 ```
-        let post = new Post();
-        let postResults = post.select(['created_at::date', 'count(*) as posts'])
-               .where({
-        							relation: 'AND',
-        	            cond: [
-        									["created_at::date", ">", "2019-01-01" ],
-                          ["author_id", "=", 25 ],
-        									{
-        										relation: 'OR',
-        										cond: [
-        												['created_at::date', ">", "2019-05-01"],
-        												['created_at::date', "<", "2019-10-01"],
-        										]
-        									}
-        							]
-        						})
-               .groupBy(['created_at::date'])
-        			 .orderBy([{col: 'created_at::date', order: 'desc'}]);
+let post = new Post();
+let postResults = post.select(['created_at::date', 'count(*) as posts'])
+       .where({
+                relation: 'AND',
+                cond: [
+                        ["created_at::date", ">", "2019-01-01" ],
+                        ["author_id", "=", 25 ],
+                        {
+                                relation: 'OR',
+                                cond: [
+                                        ['created_at::date', ">", "2019-05-01"],
+                                        ['created_at::date', "<", "2019-10-01"],
+                                ]
+                        }
+                ]
+        })
+       .groupBy(['created_at::date'])
+       .orderBy([{col: 'created_at::date', order: 'desc'}]);
+       
+postResults.then(data => {
+        console.log(data);
+}).catch(error => {
+        console.log(error);
+});
 ```
     The previous statement will produce a query like this:
 
