@@ -47,10 +47,11 @@ $ npm install --save node-db-models
                      ]);
 ```
 You can chain the following methods to your model object:
-    - `.select(columns):` passes an array of columns to your query builder.
-    - `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` where the last one - `in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
-    - `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
-    - `groupBy(groupList)`: accepts a list of columns you can group by.
+- `.select(columns):` passes an array of columns to your query builder.
+- `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` where the last one - `in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
+- `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
+- `groupBy(groupList)`: accepts a list of columns you can group by.
+    
 - After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
 ```javascript
         postResults.list().then(data => {
@@ -58,16 +59,15 @@ You can chain the following methods to your model object:
         });
 ```
 All the following functions return a promise:
-
-    - `.list()`: lists all results found in the form of array of objects.
-    - `col(column_name)`: returns an array of values of a certain column.
-    - `listAfter(offset)`: skip an *offset* amount of  values and then list all values after it.
-    - `firstOne()`: returns an object of the first row that meets conditions specified.
-    - `find(id)`: returns an object of a certain model using it's *id*
-    - `slice(skip, count)`: returns a *count* amount of rows after skipping another amount of rows.
-    - `first(count)`: return the first amount of rows that meets conditions specified.
-    - `paginate(perPage, currentPage)`: paginate through your results by passing rows per page and your current page.
-    - `chunk(count, callback)`: instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.
+- `.list()`: lists all results found in the form of array of objects.
+- `col(column_name)`: returns an array of values of a certain column.
+- `listAfter(offset)`: skip an *offset* amount of  values and then list all values after it.
+- `firstOne()`: returns an object of the first row that meets conditions specified.
+- `find(id)`: returns an object of a certain model using it's *id*
+- `slice(skip, count)`: returns a *count* amount of rows after skipping another amount of rows.
+- `first(count)`: return the first amount of rows that meets conditions specified.
+- `paginate(perPage, currentPage)`: paginate through your results by passing rows per page and your current page.
+- `chunk(count, callback)`: instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.
 
 ## Advanced Example
 
