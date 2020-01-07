@@ -7,9 +7,12 @@ NRDBM is a project aims to create an ORM for Databases queries (especially Relat
 Currently, it’s only getting tested with postgres package ([node-postgres](https://www.npmjs.com/package/pg)) but will be expanded to [mysql](https://www.npmjs.com/package/mysql) very soon.
 
 ## Get Started
-
+- Install package using npm:
+```
+$ npm install --save node-db-models
+```
 - Connect to your database using pg package:
-
+```javascript
         const Pg = require("pg");
         
           let pgModConn = new Pg.Pool({
@@ -19,30 +22,30 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
               password: '*******',
               port: 5432
           });
-
+```
 - Attach your connection with pg-models:
-
+```javascript
         const { Connection, Model } = require('node-db-models');
           Connection.attach({
               connection: pgModConn,
               type: 'pg'
           });
-
+```
 - Create models for the tables:
-
+```javascript
         class Post extends Model {
             table_name = 'posts'
           }
-
+```
 - Create an object of that class and start building queries:
-
+```javascript
         let post = new Post();
         let postResults = post.select(['title', 'body', 'created_at::date'])
                .where(["created_at", ">", "2019-01-01" ])
                .orderBy([
                    {col: 'id', order: 'desc'}
                      ]);
-
+```
     You can chain the following methods to your model object:
 
     - `.select(columns):` passes an array of columns to your query builder.
@@ -50,11 +53,11 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
     - `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
     - `groupBy(groupList)`: accepts a list of columns you can group by.
 - After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
-
+```javascript
         postResults.list().then(data => {
             console.log(data);
         });
-
+```
     All the following functions return a promise:
 
     - `.list()`: lists all results found in the form of array of objects.
@@ -70,7 +73,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
     ## Advanced Example
 
     adding conditions using AND & OR with grouping:
-```
+```javascript
 let post = new Post();
 let postResults = post.select(['created_at::date', 'count(*) as posts'])
        .where({
@@ -97,7 +100,7 @@ postResults.then(data => {
 });
 ```
 The previous statement will produce a query like this:
-```
+```sql
         SELECT created_at::date, count(*) as posts 
         FORM posts 
         WHERE (
