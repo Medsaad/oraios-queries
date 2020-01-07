@@ -47,7 +47,6 @@ $ npm install --save node-db-models
                      ]);
 ```
 You can chain the following methods to your model object:
-
     - `.select(columns):` passes an array of columns to your query builder.
     - `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` where the last one - `in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
     - `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
