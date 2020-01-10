@@ -1,4 +1,7 @@
 # Node Relational Database Models (NRDBM)
+![npm](https://img.shields.io/npm/v/node-db-models)
+![GitHub repo size](https://img.shields.io/github/repo-size/Medsaad/node-db-models)
+![Mozilla Add-on](https://img.shields.io/amo/dw/node-db-models)
 
 ## Summary
 
@@ -101,7 +104,7 @@ postResults.then(data => {
 The previous statement will produce a query like this:
 ```sql
 SELECT created_at::date, count(*) as posts 
-FORM posts 
+FROM posts 
 WHERE (
         created_at::date > "2019-01-01" AND 
         author_id, "=", 25 AND
