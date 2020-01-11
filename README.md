@@ -19,11 +19,12 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
 - Escaping html form inputs with permission to skip this validation through `allowHtml` array of columns in the model class.
 
 ## Get Started
-1. Install package using npm:
+Install package using npm:
 ```
 $ npm install --save node-db-models
 ```
-2. Connect to your database using pg package:
+
+Connect to your database using pg package:
 ```javascript
 const Pg = require("pg");
 
@@ -43,14 +44,16 @@ Connection.attach({
         type: 'pg'
 });
 ```
-3. Create models for the tables:
+
+Create models for the tables:
 ```javascript
 class Post extends Model {
         table_name = 'posts';
         allowHtml = ['body'];
 }
 ```
-4. Create an object of that class and start building queries:
+
+Create an object of that class and start building queries:
 ```javascript
 let post = new Post();
 let postResults = post.select(['title', 'body', 'created_at::date'])
@@ -65,7 +68,8 @@ You can chain the following methods to your model object:
 - `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
 - `set()`: a key value pairs of data that will be inserted or updated.
-5. After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
+
+After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
 ```javascript
 postResults.list().then(data => {
         console.log(data);
@@ -86,7 +90,7 @@ All the following functions return a promise:
 - `delete()`: get chained after a group of `where()` conditions to delete certain rows in database.
 
 ## Code Examples
-1. Inserting new row to database:
+- Inserting new row to database:
 ```javascript
 let res = post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
 res.then((dataInserted) => {
@@ -95,7 +99,7 @@ res.then((dataInserted) => {
         }
 });
 ```
-2. Updating certain rows in database:
+- Updating certain rows in database:
 ```javascript
 let res = post.set({title: 'another blog post'}).where(['id', '=', 25]).insert();
 res.then((dataUpdated) => {
@@ -104,7 +108,7 @@ res.then((dataUpdated) => {
         }
 });
 ```
-3. Deleting a row in database:
+- Deleting a row in database:
 ```javascript
 let res = post.where(['id', '=', 25]).delete();
 res.then((rowDeleted) => {
@@ -113,14 +117,14 @@ res.then((rowDeleted) => {
         }
 });
 ```
-4. find a row by id in database:
+- find a row by id in database:
 ```javascript
 let res = post.find(25);
 res.then((row) => {
         console.log(row);
 });
 ```
-5. Select query with conditions using AND & OR with grouping:
+- Select query with conditions using AND & OR with grouping:
 ```javascript
 let post = new Post();
 let postResults = post.select(['created_at::date', 'count(*) as posts'])
