@@ -1,4 +1,4 @@
-const Connection = require("./lib/connection");
+const Connection = require("./lib/db/connection");
 const Model = require("./lib/model");
 
 /**
