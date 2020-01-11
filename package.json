@@ -23,13 +23,15 @@
     "lib",
     "index.js"
   ],
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "pg": "^7.10.0",
+    "mocha": "^5.2.0",
+    "should": "^13.2.3"
   },
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"No test specified\""
+    "test": "mocha"
   },
   "license": "MIT"
 }
