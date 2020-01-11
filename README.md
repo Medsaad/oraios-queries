@@ -3,6 +3,11 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/Medsaad/node-db-models)
 ![Mozilla Add-on](https://img.shields.io/amo/dw/node-db-models)
 
+- [Summary](#summary)
+- [New Features](#new-features)
+- [Get Started](#get-started)
+- [Code Examples](#code-examples)
+
 ## Summary
 
 NRDBM is a light-weighted project aims to create an ORM for Databases queries (especially Relational Databases that performs complex where statements) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
@@ -18,7 +23,7 @@ Currently, it’s only getting tested with postgres package ([node-postgres](htt
 ```
 $ npm install --save node-db-models
 ```
-- Connect to your database using pg package:
+2) Connect to your database using pg package:
 ```javascript
 const Pg = require("pg");
 
@@ -30,7 +35,7 @@ let pgModConn = new Pg.Pool({
         port: 5432
 });
 ```
-2) Attach your connection with pg-models:
+Then attach your connection with pg-models:
 ```javascript
 const { Connection, Model } = require('node-db-models');
 Connection.attach({
