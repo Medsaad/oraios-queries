@@ -7,7 +7,7 @@
 
 NRDBM is a light-weighted project aims to create an ORM for Databases queries (especially Relational Databases) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
 
-Currently, it’s only getting tested with postgres package ([node-postgres](https://www.npmjs.com/package/pg)) but will be expanded to [mysql](https://www.npmjs.com/package/mysql) very soon.
+Currently, it’s only getting tested with postgres package ([node-postgres](https://www.npmjs.com/package/pg)) but will be expanded to [mysql2](https://www.npmjs.com/package/mysql2) very soon.
 
 ## Get Started
 - Install package using npm:
@@ -50,9 +50,9 @@ let postResults = post.select(['title', 'body', 'created_at::date'])
         ]);
 ```
 You can chain the following methods to your model object:
-- `.select(columns):` passes an array of columns to your query builder.
-- `.where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
-- `.orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
+- `select(columns):` passes an array of columns to your query builder.
+- `where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
+- `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
     
 - After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
@@ -62,7 +62,7 @@ postResults.list().then(data => {
 });
 ```
 All the following functions return a promise:
-- `.list()`: lists all results found in the form of array of objects.
+- `list()`: lists all results found in the form of array of objects.
 - `col(column_name)`: returns an array of values of a certain column.
 - `listAfter(offset)`: skip an *offset* amount of  values and then list all values after it.
 - `firstOne()`: returns an object of the first row that meets conditions specified.
