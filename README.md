@@ -36,7 +36,7 @@ let pgModConn = new Pg.Pool({
         port: 5432
 });
 ```
-Then attach your connection with pg-models:
+Then attach your connection with node-db-models:
 ```javascript
 const { Connection, Model } = require('node-db-models');
 Connection.attach({
@@ -67,7 +67,7 @@ You can chain the following methods to your model object:
 - `where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
 - `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
-- `set()`: a key value pairs of data that will be inserted or updated.
+- `set(values)`: a key value pairs of data that will be inserted or updated.
 
 After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
 ```javascript
@@ -101,7 +101,7 @@ res.then((dataInserted) => {
 ```
 - Updating certain rows in database:
 ```javascript
-let res = post.set({title: 'another blog post'}).where(['id', '=', 25]).insert();
+let res = post.set({title: 'another blog post'}).where(['id', '=', 25]).update();
 res.then((dataUpdated) => {
         if(dataUpdated){
              //do something
@@ -160,7 +160,7 @@ WHERE (
         author_id, "=", 25 AND
         (
                 created_at::date > "2019-05-01" OR
-        created_at::date < "2019-10-01"
+                created_at::date < "2019-10-01"
         )
 ) 
 GROUP BY created_at::date 
