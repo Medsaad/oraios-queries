@@ -1,5 +1,6 @@
 node_modules
 postgres
+mysql
 app.js
 docker-compose.yml
 Dockerfile
