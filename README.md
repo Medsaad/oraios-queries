@@ -1,10 +1,10 @@
 # Node Relational Database Models (NRDBM)
 ![npm](https://img.shields.io/npm/v/node-db-models)
-![GitHub repo size](https://img.shields.io/github/repo-size/Medsaad/node-db-models)
-![Mozilla Add-on](https://img.shields.io/amo/dw/node-db-models)
+![npm](https://img.shields.io/npm/dw/node-db-models)
+![NPM](https://img.shields.io/npm/l/node-db-models)
 
 - [Summary](#summary)
-- [New Features](#new-features)
+- [New & Future Features](#new--future-features)
 - [Get Started](#get-started)
 - [Code Examples](#code-examples)
 
@@ -12,11 +12,14 @@
 
 NRDBM is a light-weighted project aims to create an ORM for Databases queries (especially Relational Databases that performs complex where statements) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
 
-Currently, it’s only getting tested with postgres package ([node-postgres](https://www.npmjs.com/package/pg)) but will be expanded to [mysql2](https://www.npmjs.com/package/mysql2) very soon.
+NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https://www.npmjs.com/package/mysql2) packages.
 
-## New Features
-- Supporting insert, update & delete statements.
-- Escaping html form inputs with permission to skip this validation through `allowHtml` array of columns in the model class.
+## New & Future Features
+The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
+- **New**: Support MySQL
+- **Soon**: Support for SQLite.
+- **Soon**: Event Handling. Ex: onInsert(), onUpdate(), onSelect() functions within model classes.
+- **Soon:** Apply table joins.
 
 ## Get Started
 Install package using npm:
@@ -24,9 +27,12 @@ Install package using npm:
 $ npm install --save node-db-models
 ```
 
-Connect to your database using pg package:
+Connect to your database using [pg](https://www.npmjs.com/package/pg) or [mysql2](https://www.npmjs.com/package/mysql2) package, then attach your connection with node-db-models:
+### For Postgres:
+
 ```javascript
 const Pg = require("pg");
+const { Connection, Model } = require('node-db-models');
 
 let pgModConn = new Pg.Pool({
         host: '127.0.0.1',
@@ -35,17 +41,35 @@ let pgModConn = new Pg.Pool({
         password: '*******',
         port: 5432
 });
-```
-Then attach your connection with node-db-models:
-```javascript
-const { Connection, Model } = require('node-db-models');
+
 Connection.attach({
         connection: pgModConn,
         type: 'pg'
 });
 ```
 
-Create models for the tables:
+### For MySQL:
+```javascript
+
+const mysql = require('mysql2');
+const { Connection, Model } = require('node-db-models');
+
+const mysqlConn = mysql.createPool({
+        host: '127.0.0.1',
+        user: 'admin',
+        password: '*****',
+        database: 'sampledb',
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+});
+
+Connection.attach({
+        connection: mysqlConn,
+        type: 'mysql'
+});
+```
+That's it. From now on everything will be the same acros different connections.Lets create models for our databse tables that will extend `Model` class that we imported above:
 ```javascript
 class Post extends Model {
         table_name = 'posts';
@@ -166,12 +190,5 @@ WHERE (
 GROUP BY created_at::date 
 ORDER BY created_at::date desc;
 ```
-
-## Current work on progress
-
-The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
-
-- Apply table joins.
-- Support MySQL.
 
 Copyright (c) 2019-2020 Ahmed Saad Zaghloul (ahmedthegicoder@gmail.com) MIT License
