@@ -16,7 +16,7 @@ NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https:/
 
 ## New & Future Features
 The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
-- **New**: Support MySQL
+- **New**: Updated the way you connect to database
 - **Soon**: Support for SQLite.
 - **Soon**: Event Handling. Ex: onInsert(), onUpdate(), onSelect() functions within model classes.
 - **Soon:** Apply table joins.
@@ -42,7 +42,7 @@ let pgModConn = new Pg.Pool({
         port: 5432
 });
 
-Connection.attach({
+let conn = new Connection({
         connection: pgModConn,
         type: 'pg'
 });
@@ -64,7 +64,7 @@ const mysqlConn = mysql.createPool({
         queueLimit: 0
 });
 
-Connection.attach({
+let conn = new Connection({
         connection: mysqlConn,
         type: 'mysql'
 });
@@ -74,6 +74,7 @@ That's it. From now on everything will be the same acros different connections.L
 class Post extends Model {
         table_name = 'posts';
         allowHtml = ['body'];
+        connection = conn; //the object created above
 }
 ```
 
