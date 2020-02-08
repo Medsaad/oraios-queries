@@ -87,7 +87,7 @@ let postResults = post.select(['title', 'body', 'created_at::date'])
 ```
 You can chain the following methods to your model object:
 - `select(columns):` passes an array of columns to your query builder.
-- `innerJoin(rightModel, leftField, rightField) | leftJoin(rightModel, leftField, rightField) | rightJoin(rightModel, leftField, rightField):`: Perform a join between the current model and another model. The first parameter should be an object from the model that you need join with. The second should be the column from the current model and third parameter should be the column from the model that was added in the first parameter.
+- `innerJoin(rightModel, leftField, rightField)`, `leftJoin(rightModel, leftField, rightField)` and `rightJoin(rightModel, leftField, rightField):`: the 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter should be an object from the model that you need join with. The second should be the column from the current model and third parameter should be the column from the model that was added in the first parameter.
 - `where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
 - `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
@@ -147,6 +147,13 @@ let res = post.find(25);
 res.then((row) => {
         console.log(row);
 });
+```
+- perform a query with joins:
+```javascript
+let userEmails = user.innerJoin(post, 'id', 'post_author').select(['user_email'])
+userEmails.list().then((data) => {
+                    console.log(data);
+                });
 ```
 - Select query with conditions using AND & OR with grouping:
 ```javascript
