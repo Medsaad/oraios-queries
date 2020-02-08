@@ -16,10 +16,8 @@ NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https:/
 
 ## New & Future Features
 The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
-- **New**: Support MySQL
-- **Soon**: Support for SQLite.
+- **New:** Apply table joins.
 - **Soon**: Event Handling. Ex: onInsert(), onUpdate(), onSelect() functions within model classes.
-- **Soon:** Apply table joins.
 
 ## Get Started
 Install package using npm:
@@ -42,7 +40,7 @@ let pgModConn = new Pg.Pool({
         port: 5432
 });
 
-Connection.attach({
+let conn = new Connection({
         connection: pgModConn,
         type: 'pg'
 });
@@ -64,7 +62,7 @@ const mysqlConn = mysql.createPool({
         queueLimit: 0
 });
 
-Connection.attach({
+let conn = new Connection({
         connection: mysqlConn,
         type: 'mysql'
 });
@@ -74,6 +72,7 @@ That's it. From now on everything will be the same acros different connections.L
 class Post extends Model {
         table_name = 'posts';
         allowHtml = ['body'];
+        connection = conn; //the object created above
 }
 ```
 
@@ -88,6 +87,7 @@ let postResults = post.select(['title', 'body', 'created_at::date'])
 ```
 You can chain the following methods to your model object:
 - `select(columns):` passes an array of columns to your query builder.
+- `innerJoin(rightModel, leftField, rightField) | leftJoin(rightModel, leftField, rightField) | rightJoin(rightModel, leftField, rightField):`: Perform a join between the current model and another model. The first parameter should be an object from the model that you need join with. The second should be the column from the current model and third parameter should be the column from the model that was added in the first parameter.
 - `where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
 - `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
@@ -151,21 +151,23 @@ res.then((row) => {
 - Select query with conditions using AND & OR with grouping:
 ```javascript
 let post = new Post();
+let conditions = {
+        relation: 'AND',
+        cond: []
+};
+conditions.cond.push(["created_at::date", ">", "2019-01-01" ]);
+conditions.cond.push(["author_id", "=", 25 ]);
+//include a nested condition
+let nestedConditions = {
+        relation: 'OR',
+        cond: []
+};
+nestedConditions.cond.push(['created_at::date', ">", "2019-05-01"]);
+nestedConditions.cond.push(['created_at::date', "<", "2019-10-01"]);
+//add nested condition into the list of conditions
+conditions.cond.push(nestedConditions);
 let postResults = post.select(['created_at::date', 'count(*) as posts'])
-       .where({
-                relation: 'AND',
-                cond: [
-                        ["created_at::date", ">", "2019-01-01" ],
-                        ["author_id", "=", 25 ],
-                        {
-                                relation: 'OR',
-                                cond: [
-                                        ['created_at::date', ">", "2019-05-01"],
-                                        ['created_at::date', "<", "2019-10-01"],
-                                ]
-                        }
-                ]
-        })
+       .where(conditions)
        .groupBy(['created_at::date'])
        .orderBy([{col: 'created_at::date', order: 'desc'}]);
        
