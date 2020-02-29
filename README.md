@@ -16,7 +16,7 @@ NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https:/
 
 ## Current & Future Features
 The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that are developed/being developed:
-- **Insert/Select/Update/Delete** Data from **Postgresql** and **MySQL** with complex nest where conditions.
+- **Insert/Select/Update/Delete** Data from **Postgresql** and **MySQL** with complex nested where conditions.
 - Create **class passed models** for your tables.
 - **New**: Specify certain fields to be **selectable** by default instead of bringing everything in `SELECT *`.
 - Allow **HTML data** to be added in certain fields.
@@ -75,12 +75,13 @@ let conn = new Connection({
 That's it. From now on everything will be the same acros different connections.Lets create models for our databse tables that will extend `Model` class that we imported above:
 ```javascript
 class Post extends Model {
-        table_name = 'posts';
+        tableName = 'posts';
         allowHtml = ['body'];
         selectable = ['title', 'body', 'author_id', 'created_at::date'];
         connection = conn; //the object created above
 }
 ```
+- `tableName`: the table name in database where you need to apply the connection.
 - `allowHtml`: do not strip html for this column.
 - `selectable`: select those column by default when not calling select() method.
 - `connection`: pass the connection object after initiating `new Connection()`.
