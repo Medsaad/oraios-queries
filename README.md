@@ -14,9 +14,14 @@ NRDBM is a light-weighted project aims to create an ORM for Databases queries (e
 
 NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https://www.npmjs.com/package/mysql2) packages.
 
-## New & Future Features
-The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
-- **New:** Apply table joins.
+## Current & Future Features
+The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that are developed/being developed:
+- **Insert/Select/Update/Delete** Data from **Postgresql** and **MySQL** with complex nest where conditions.
+- Create **class passed models** for your tables.
+- **New**: Specify certain fields to be **selectable** by default instead of bringing everything in `SELECT *`.
+- Allow **HTML data** to be added in certain fields.
+- Extract data in various ways: **list, select one column, first item, slicing, chunking, pagination**.
+- Apply **joins** between tables.
 - **Soon**: Event Handling. Ex: onInsert(), onUpdate(), onSelect() functions within model classes.
 
 ## Get Started
@@ -72,9 +77,13 @@ That's it. From now on everything will be the same acros different connections.L
 class Post extends Model {
         table_name = 'posts';
         allowHtml = ['body'];
+        selectable = ['title', 'body', 'author_id', 'created_at::date'];
         connection = conn; //the object created above
 }
 ```
+- `allowHtml`: do not strip html for this column.
+- `selectable`: select those column by default when not calling select() method.
+- `connection`: pass the connection object after initiating `new Connection()`.
 
 Create an object of that class and start building queries:
 ```javascript
