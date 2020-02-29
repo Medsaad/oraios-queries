@@ -14,9 +14,14 @@ NRDBM is a light-weighted project aims to create an ORM for Databases queries (e
 
 NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https://www.npmjs.com/package/mysql2) packages.
 
-## New & Future Features
-The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that is currently getting added:
-- **New:** Apply table joins.
+## Current & Future Features
+The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that are developed/being developed:
+- **Insert/Select/Update/Delete** Data from **Postgresql** and **MySQL** with complex nested where conditions.
+- Create **class passed models** for your tables.
+- **New**: Specify certain fields to be **selectable** by default instead of bringing everything in `SELECT *`.
+- Allow **HTML data** to be added in certain fields.
+- Extract data in various ways: **list, select one column, first item, slicing, chunking, pagination**.
+- Apply **joins** between tables.
 - **Soon**: Event Handling. Ex: onInsert(), onUpdate(), onSelect() functions within model classes.
 
 ## Get Started
@@ -70,11 +75,16 @@ let conn = new Connection({
 That's it. From now on everything will be the same acros different connections.Lets create models for our databse tables that will extend `Model` class that we imported above:
 ```javascript
 class Post extends Model {
-        table_name = 'posts';
+        tableName = 'posts';
         allowHtml = ['body'];
+        selectable = ['title', 'body', 'author_id', 'created_at::date'];
         connection = conn; //the object created above
 }
 ```
+- `tableName`: the table name in database where you need to apply the connection.
+- `allowHtml`: do not strip html for this column.
+- `selectable`: select those column by default when not calling select() method.
+- `connection`: pass the connection object after initiating `new Connection()`.
 
 Create an object of that class and start building queries:
 ```javascript
@@ -87,7 +97,7 @@ let postResults = post.select(['title', 'body', 'created_at::date'])
 ```
 You can chain the following methods to your model object:
 - `select(columns):` passes an array of columns to your query builder.
-- `innerJoin(rightModel, leftField, rightField) | leftJoin(rightModel, leftField, rightField) | rightJoin(rightModel, leftField, rightField):`: Perform a join between the current model and another model. The first parameter should be an object from the model that you need join with. The second should be the column from the current model and third parameter should be the column from the model that was added in the first parameter.
+- `innerJoin(rightModel, leftField, rightField)`, `leftJoin(rightModel, leftField, rightField)` and `rightJoin(rightModel, leftField, rightField):`: the 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter should be an object from the model that you need join with. The second should be the column from the current model and third parameter should be the column from the model that was added in the first parameter.
 - `where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
 - `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
 - `groupBy(groupList)`: accepts a list of columns you can group by.
@@ -147,6 +157,13 @@ let res = post.find(25);
 res.then((row) => {
         console.log(row);
 });
+```
+- perform a query with joins:
+```javascript
+let userEmails = user.innerJoin(post, 'id', 'post_author').select(['user_email'])
+userEmails.list().then((data) => {
+                    console.log(data);
+                });
 ```
 - Select query with conditions using AND & OR with grouping:
 ```javascript
