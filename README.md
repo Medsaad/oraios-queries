@@ -72,7 +72,7 @@ let conn = new Connection({
         type: 'mysql'
 });
 ```
-That's it. From now on everything will be the same acros different connections.Lets create models for our databse tables that will extend `Model` class that we imported above:
+That's it. From now on everything will be the same across different connections. Let's create models for our databse tables that will extend `Model` class that we imported above:
 ```javascript
 class Post extends Model {
         tableName = 'posts';
@@ -81,9 +81,9 @@ class Post extends Model {
         connection = conn; //the object created above
 }
 ```
-- `tableName`: the table name in database where you need to apply the connection.
-- `allowHtml`: do not strip html for this column.
-- `selectable`: select those column by default when not calling select() method.
+- `tableName`: the table name in the database.
+- `allowHtml`: do not strip html tags from this column.
+- `selectable`: select those column by default when select() method is not invoked. If not used `SELECT *` will be implemented.
 - `connection`: pass the connection object after initiating `new Connection()`.
 
 Create an object of that class and start building queries:
@@ -103,7 +103,7 @@ You can chain the following methods to your model object:
 - `groupBy(groupList)`: accepts a list of columns you can group by.
 - `set(values)`: a key value pairs of data that will be inserted or updated.
 
-After the query is build, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
+After the query is built, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
 ```javascript
 postResults.list().then(data => {
         console.log(data);
@@ -151,14 +151,14 @@ res.then((rowDeleted) => {
         }
 });
 ```
-- find a row by id in database:
+- Find a row by id in database:
 ```javascript
 let res = post.find(25);
 res.then((row) => {
         console.log(row);
 });
 ```
-- perform a query with joins:
+- Perform a query with joins:
 ```javascript
 let userEmails = user.innerJoin(post, 'id', 'post_author').select(['user_email'])
 userEmails.list().then((data) => {
