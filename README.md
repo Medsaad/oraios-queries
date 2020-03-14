@@ -89,7 +89,7 @@ class Post extends Model {
 Create an object of that class and start building queries:
 ```javascript
 let post = new Post();
-let postResults = post.select(['title', 'body', 'created_at::date'])
+let postQuery = post.select(['title', 'body', 'created_at::date'])
         .where(["created_at", ">", "2019-01-01" ])
         .orderBy([
                 {col: 'id', order: 'desc'}
@@ -105,9 +105,7 @@ You can chain the following methods to your model object:
 
 After the query is built, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
 ```javascript
-postResults.list().then(data => {
-        console.log(data);
-});
+let postResults = await postQuery.list();
 ```
 All the following functions return a promise:
 - `list()`: lists all results found in the form of array of objects.
@@ -126,44 +124,33 @@ All the following functions return a promise:
 ## Code Examples
 - Inserting new row to database:
 ```javascript
-let res = post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
-res.then((dataInserted) => {
-        if(dataInserted){
-             //do something
-        }
-});
+let insertedRows = await post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
+if(insertedRows !== 0){
+        //success
+}
 ```
 - Updating certain rows in database:
 ```javascript
-let res = post.set({title: 'another blog post'}).where(['id', '=', 25]).update();
-res.then((dataUpdated) => {
-        if(dataUpdated){
-             //do something
-        }
-});
+let affectedRows = await post.set({title: 'another blog post'}).where(['id', '=', 25]).update();
+if(affectedRows !== 0){
+        //update successful
+}
 ```
 - Deleting a row in database:
 ```javascript
-let res = post.where(['id', '=', 25]).delete();
-res.then((rowDeleted) => {
-        if(rowDeleted){
-             //do something
-        }
-});
+let rowDeleted = await post.where(['id', '=', 25]).delete();
+if(rowDeleted !== 0){
+        //delete successful
+}
 ```
 - Find a row by id in database:
 ```javascript
-let res = post.find(25);
-res.then((row) => {
-        console.log(row);
-});
+let row = await post.find(25);
 ```
 - Perform a query with joins:
 ```javascript
-let userEmails = user.innerJoin(post, 'id', 'post_author').select(['user_email'])
-userEmails.list().then((data) => {
-                    console.log(data);
-                });
+let userJoinQuery = user.innerJoin(post, 'id', 'post_author').select(['user_email']);
+let userEmails = await userJoinQuery.list();
 ```
 - Select query with conditions using AND & OR with grouping:
 ```javascript
@@ -183,16 +170,12 @@ nestedConditions.cond.push(['created_at::date', ">", "2019-05-01"]);
 nestedConditions.cond.push(['created_at::date', "<", "2019-10-01"]);
 //add nested condition into the list of conditions
 conditions.cond.push(nestedConditions);
-let postResults = post.select(['created_at::date', 'count(*) as posts'])
+let postQuery = post.select(['created_at::date', 'count(*) as posts'])
        .where(conditions)
        .groupBy(['created_at::date'])
        .orderBy([{col: 'created_at::date', order: 'desc'}]);
        
-postResults.then(data => {
-        console.log(data);
-}).catch(error => {
-        console.log(error);
-});
+let postRes = await postQuery.list();
 ```
 The previous statement will produce a query like this:
 ```sql
