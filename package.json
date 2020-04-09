@@ -1,7 +1,7 @@
 {
   "name": "node-db-models",
   "description": "Models & Query Builder for relational databases",
-  "version": "1.2.5",
+  "version": "1.3.5",
   "repository": "git://github.com/Medsaad/node-db-models",
   "main": "index.js",
   "author": {
