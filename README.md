@@ -75,6 +75,17 @@ That's it. From now on everything will be the same across different connections.
 ### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
 
 ## Code Examples
+- Create a Model:
+```javascript
+const { Model } = require('oraios-queries');
+
+class Post extends Model {
+        tableName = 'posts';
+        allowHtml = ['body'];
+        selectable = ['title', 'body', 'author_id', 'created_at::date'];
+        connection = conn; //the object created above
+}
+```
 - Inserting new row to database:
 ```javascript
 let insertedRows = await post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
@@ -108,26 +119,24 @@ let userEmails = await userJoinQuery.list();
 - Select query with conditions using AND & OR with grouping:
 ```javascript
 let post = new Post();
-let conditions = {
-        relation: 'AND',
-        cond: []
-};
+let conditions = nestedConditions = { cond: [] };
+
+conditions.relation = 'AND';
 conditions.cond.push(["created_at::date", ">", "2019-01-01" ]);
 conditions.cond.push(["author_id", "=", 25 ]);
+
 //include a nested condition
-let nestedConditions = {
-        relation: 'OR',
-        cond: []
-};
+nestedConditions.relation = 'OR';
 nestedConditions.cond.push(['created_at::date', ">", "2019-05-01"]);
 nestedConditions.cond.push(['created_at::date', "<", "2019-10-01"]);
+
 //add nested condition into the list of conditions
 conditions.cond.push(nestedConditions);
 let postQuery = post.select(['created_at::date', 'count(*) as posts'])
-       .where(conditions)
-       .groupBy(['created_at::date'])
-       .orderBy([{col: 'created_at::date', order: 'desc'}]);
-       
+        .where(conditions)
+        .groupBy(['created_at::date'])
+        .orderBy([{col: 'created_at::date', order: 'desc'}]);
+        
 let postRes = await postQuery.list();
 ```
 The previous statement will produce a query like this:
