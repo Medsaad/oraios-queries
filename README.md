@@ -1,28 +1,26 @@
-# Node Relational Database Models (NRDBM)
-![npm](https://img.shields.io/npm/v/node-db-models)
-![npm](https://img.shields.io/npm/dw/node-db-models)
-![NPM](https://img.shields.io/npm/l/node-db-models)
+# Oraios Queries
+![npm](https://img.shields.io/npm/v/oraios-queries)
+![npm](https://img.shields.io/npm/dw/oraios-queries)
+![NPM](https://img.shields.io/npm/l/oraios-queries)
 
-- [Summary](#summary)
-- [New & Future Features](#new--future-features)
+Oraios Queries (formerly [note-db-models](https://www.npmjs.com/package/node-db-models)) is a light-weighted project aims to provide class-based table representation and flexible query experience to help developers to avoid plain string queries that are error-prune once the query start to gets a little long.
+
+### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
+
+- [Features](#new--future-features)
 - [Get Started](#get-started)
 - [Code Examples](#code-examples)
 
-## Summary
+Oraios Queries supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https://www.npmjs.com/package/mysql2) packages.
 
-NRDBM is a light-weighted project aims to create an ORM for Databases queries (especially Relational Databases that performs complex where statements) to help developers create model classes for tables and query them using functions rather than plain string that is error-prune once the query start to gets a little long.
-
-NRDBM supports [postgres](https://www.npmjs.com/package/pg) and [mysql2](https://www.npmjs.com/package/mysql2) packages.
-
-## Current & Future Features
+## Features
 The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that are developed/being developed:
-- **Insert/Select/Update/Delete** Data from **Postgresql** and **MySQL** with complex nested where conditions.
-- Create **class passed models** for your tables.
-- Specify certain fields to be **selectable** by default instead of bringing everything in `SELECT *`.
-- Allow **HTML data** to be added in certain fields.
-- Extract data in various ways: **list, select one column, first item, slicing, chunking, pagination**.
-- Apply **joins** between tables.
-- **Soon**: Event Handling. Ex: onInsert(), onUpdate(), onSelect() functions within model classes.
+- **CRUD Ops**: Insert/Select/Update/Delete Data from Postgresql and MySQL with complex nested where conditions.
+- **ORM**: Create class-based models for your tables with built-in features.
+- **Flexible Queries**: Designed to perform complex and nested where statements, ordering and grouping.
+- **Many Options**: Specify certain fields to be selectable by default, allow HTML tags to be stored in database for certain fields.
+- **Pre-defined Query Executers**: Extract data in various ways: list, select one column, first item, slicing, chunking, pagination and more.
+**Light Weighted**: This package is light and can be added on APIs, web workers, .. etc.
 
 ## Get Started
 Install package using npm:
@@ -72,8 +70,15 @@ let conn = new Connection({
         type: 'mysql'
 });
 ```
-That's it. From now on everything will be the same across different connections. Let's create models for our databse tables that will extend `Model` class that we imported above:
+That's it. From now on everything will be the same across different connections.n rows in database.
+
+### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
+
+## Code Examples
+- Create a Model:
 ```javascript
+const { Model } = require('oraios-queries');
+
 class Post extends Model {
         tableName = 'posts';
         allowHtml = ['body'];
@@ -81,47 +86,6 @@ class Post extends Model {
         connection = conn; //the object created above
 }
 ```
-- `tableName`: the table name in the database.
-- `allowHtml`: do not strip html tags from this column.
-- `selectable`: select those column by default when select() method is not invoked. If not used `SELECT *` will be implemented.
-- `connection`: pass the connection object after initiating `new Connection()`.
-
-Create an object of that class and start building queries:
-```javascript
-let post = new Post();
-let postQuery = post.select(['title', 'body', 'created_at::date'])
-        .where(["created_at", ">", "2019-01-01" ])
-        .orderBy([
-                {col: 'id', order: 'desc'}
-        ]);
-```
-You can chain the following methods to your model object:
-- `select(columns):` passes an array of columns to your query builder.
-- `innerJoin(rightModel, leftField, rightField)`, `leftJoin(rightModel, leftField, rightField)` and `rightJoin(rightModel, leftField, rightField):`: the 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter should be an object from the model that you need join with. The second should be the column from the current model and third parameter should be the column from the model that was added in the first parameter.
-- `where(conditions)`: accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are `=`, `≠`, `>`, `≥`, `<`, `≤`, `like`, `ilike`, `in` & `not in` where the last 2 - `in` & `not in`- expects to have array in its value `["id", "in", [1, 2,3]]`.
-- `orderBy(orderList):` accepts an array of objects where you can add a list of order columns and order directions.
-- `groupBy(groupList)`: accepts a list of columns you can group by.
-- `set(values)`: a key value pairs of data that will be inserted or updated.
-
-After the query is built, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
-```javascript
-let postResults = await postQuery.list();
-```
-All the following functions return a promise:
-- `list()`: lists all results found in the form of array of objects.
-- `col(column_name)`: returns an array of values of a certain column.
-- `listAfter(offset)`: skip an *offset* amount of  values and then list all values after it.
-- `firstOne()`: returns an object of the first row that meets conditions specified.
-- `find(id)`: returns an object of a certain model using it's *id*
-- `slice(skip, count)`: returns a *count* amount of rows after skipping another amount of rows.
-- `first(count)`: return the first amount of rows that meets conditions specified.
-- `paginate(perPage, currentPage)`: paginate through your results by passing rows per page and your current page.
-- `chunk(count, callback)`: instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.
-- `insert()`: get chained after `set(data)` to insert data into database.
-- `update()`: get chained after `set(data)` and a group of `where()` conditions to update certain rows in database.
-- `delete()`: get chained after a group of `where()` conditions to delete certain rows in database.
-
-## Code Examples
 - Inserting new row to database:
 ```javascript
 let insertedRows = await post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
@@ -155,26 +119,24 @@ let userEmails = await userJoinQuery.list();
 - Select query with conditions using AND & OR with grouping:
 ```javascript
 let post = new Post();
-let conditions = {
-        relation: 'AND',
-        cond: []
-};
+let conditions = nestedConditions = { cond: [] };
+
+conditions.relation = 'AND';
 conditions.cond.push(["created_at::date", ">", "2019-01-01" ]);
 conditions.cond.push(["author_id", "=", 25 ]);
+
 //include a nested condition
-let nestedConditions = {
-        relation: 'OR',
-        cond: []
-};
+nestedConditions.relation = 'OR';
 nestedConditions.cond.push(['created_at::date', ">", "2019-05-01"]);
 nestedConditions.cond.push(['created_at::date', "<", "2019-10-01"]);
+
 //add nested condition into the list of conditions
 conditions.cond.push(nestedConditions);
 let postQuery = post.select(['created_at::date', 'count(*) as posts'])
-       .where(conditions)
-       .groupBy(['created_at::date'])
-       .orderBy([{col: 'created_at::date', order: 'desc'}]);
-       
+        .where(conditions)
+        .groupBy(['created_at::date'])
+        .orderBy([{col: 'created_at::date', order: 'desc'}]);
+        
 let postRes = await postQuery.list();
 ```
 The previous statement will produce a query like this:

@@ -1,0 +1,432 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oraios Queries Documentation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900" rel="stylesheet">
+  <link rel="stylesheet" href="css/scribbler-global.css">
+  <link rel="stylesheet" href="css/scribbler-doc.css">
+  <link rel="stylesheet" href="js/styles/agate.css">
+  <script src="js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+  <div class="doc__bg"></div>
+  <nav class="header">
+    <h1 class="logo">Oraios <span class="logo__thin">Queries</span></h1>
+    <ul class="menu">
+      <div class="menu__item toggle"><span></span></div>
+      <li class="menu__item"><a href="https://github.com/Medsaad/oraios-queries" class="link link--dark"><i
+            class="fa fa-github"></i> Github</a></li>
+      <li class="menu__item"><a href="index.html" class="link link--dark"><i class="fa fa-home"></i> Home</a></li>
+    </ul>
+  </nav>
+  <div class="wrapper">
+    <aside class="doc__nav">
+      <ul>
+        <li class="js-btn selected">Get Started</li>
+        <li class="js-btn">Configuration</li>
+        <li class="js-btn">Models</li>
+        <li class="js-btn">Query Builders</li>
+        <li class="js-btn">Query Executers</li>
+        <li class="js-btn">Utilites</li>
+        <li class="js-btn">Code Examples</li>
+      </ul>
+    </aside>
+    <article class="doc__content">
+      <section class="js-section">
+        <h3 class="section__title">Get Started</h3>
+        <p>Oraios Queries is a light-weighted project aims to create an ORM for Databases queries (especially Relational
+          Databases that performs complex where statements) to help developers create model classes for tables and query
+          them using functions rather than plain string that is error-prune once the query start to gets a little long.
+        </p>
+        <p>Currenlty, the package supports <a href="https://www.npmjs.com/package/pg">Postgres</a> and <a
+            href="https://www.npmjs.com/package/mysql2">Mysql</a></p>
+        <h3 class="section__title">Installation</h3>
+        <div class="code__block code__block--notabs">
+          <pre class="code--block">
+            <code class="language-bash">
+              $ npm install --save oraios-queries
+            </code>
+          </pre>
+        </div>
+      </section>
+      <section class="js-section">
+        <h3 class="section__title">Configuration</h3>
+        <p>Connect to your database using <code>pg</code> or <code>mysql2</code> package, then attach your connection
+          with node-db-models:</p>
+
+        <h4>Postgres</h4>
+        <pre class="code--block">
+            <code class="language-JavaScript">
+              const Pg = require("pg");
+              const { Connection } = require('oraios-queries');
+              
+              //pg package init
+              let pgModConn = new Pg.Pool({
+                host: '127.0.0.1',
+                user: 'admin',
+                database: 'sampledb',
+                password: '*******',
+                port: 5432
+              });
+
+              //oraios init :)
+              let conn = new Connection({
+                connection: pgModConn,
+                type: 'pg'
+              });
+            </code>
+          </pre>
+        <h4>MySQL</h4>
+        <pre class="code--block">
+              <code class="language-JavaScript">
+                const mysql = require('mysql2');
+                const { Connection } = require('oraios-queries');
+
+                //mysql2 package init
+                const mysqlConn = mysql.createPool({
+                  host: '127.0.0.1',
+                  user: 'admin',
+                  password: '*****',
+                  database: 'sampledb',
+                  waitForConnections: true,
+                  connectionLimit: 10,
+                  queueLimit: 0
+                });
+
+                //oraios init :)
+                let conn = new Connection({
+                  connection: mysqlConn,
+                  type: 'mysql'
+                });
+              </code>
+            </pre>
+            <p>Creating an object for the connection enables multiple db connections.</p>
+      </section>
+      <section class="js-section">
+        <h3 class="section__title">Models</h3>
+        <p>Let's create models for our databse tables that will extend <code>Model</code> class that we imported above:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            const { Model } = require('oraios-queries');
+
+            class Post extends Model {
+              tableName = 'posts';
+              allowHtml = ['body'];
+              selectable = ['title', 'body', 'author_id', 'created_at::date'];
+              connection = conn; //the object created above
+            }
+
+            module.exports = new Post();
+          </code>
+        </pre>
+        <table id="customers">
+          <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th style="width: 200px;">Is Required?</th>
+          </tr>
+          <tr>
+            <td>tableName</td>
+            <td>The name of the table which this class represents.</td>
+            <td>YES</td>
+          </tr>
+          <tr>
+            <td>connection</td>
+            <td>pass the connection object after initiating <code>new Connection()</code>.</td>
+            <td>YES</td>
+          </tr>
+          <tr>
+            <td>allowHtml</td>
+            <td>Oraios strip html tags from all fields before storing to DB. If you do not want that for certain tags include them in this array.</td>
+            <td>NO</td>
+          </tr>
+          <tr>
+            <td>selectable</td>
+            <td>Select those column by default when <code>select()</code> method is not invoked. If not used <code>SELECT *</code> will be implemented.</td>
+            <td>NO</td>
+          </tr>
+        </table>
+      </section>
+      <section class="js-section">
+        <h3 class="section__title">Query Builders</h3>
+        <p>Now since you created your model(s). It's time to import the object of that class and start building queries:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            const post = require('./post.js');
+            let postQuery = post.select(['title', 'body', 'created_at::date'])
+                .where(["created_at", ">", "2019-01-01" ]);
+            //some code ..
+            postQuery = postQuery.orderBy([
+                        {col: 'id', order: 'desc'}
+                ]);
+          </code>
+        </pre>
+        <p>The above code builds your query, but does not execute it. You are free to chain to add to the query. You can use one of the following:</p>
+        <table id="customers">
+          <tr>
+            <th>Methods</th>
+            <th>Description</th>
+            <th style="width: 350px;">Example</th>
+          </tr>
+          <tr>
+            <td>select(columns)</td>
+            <td>passes an array of columns to your query builder.</td>
+            <td><code>select(['title', 'body', 'created_at::date'])</code></td>
+          </tr>
+          <tr>
+            <td>where(conditions)</td>
+            <td>accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are =, ≠, >, ≥, <, ≤, like, ilike, in & not in where the last 2 - in & not in- expects to have array in its value ["id", "in", [1, 2,3]].</td>
+            <td><code>where(["created_at", ">", "2019-01-01" ])</code></td>
+          </tr>
+          <tr>
+            <td>orderBy(orderList)</td>
+            <td>accepts an array of objects where you can add a list of order columns and order directions</td>
+            <td><code>orderBy([{col: 'id', order: 'desc'},{col: 'created_at', order: 'asc'}])</code></td>
+          </tr>
+          <tr>
+            <td>groupBy(groupList)</td>
+            <td>accepts a list of columns you can group by</td>
+            <td><code>groupBy(['author_id', 'post_id'])</code></td>
+          </tr>
+          <tr>
+            <td>set(values)</td>
+            <td>a key value pairs of data that will be inserted or updated. Used only with insert and update.</td>
+            <td><code>set({title: 'another blog post'})</code> </td>
+          </tr>
+          <tr>
+            <td>innerJoin(m, l, r)<br/> leftJoin(m, l, r) <br/> rightJoin(m, l, r)</td>
+            <td> the 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter (m) should be a Model object that you need join with. The second (l) should be the column from the current model and third parameter (r) should be the column from the model that was added in the first parameter.</td>
+            <td><code>user.innerJoin(post, 'id', 'post_author')</code></td>
+          </tr>
+        </table>
+      </section>
+
+      <section class="js-section">
+        <h3 class="section__title">Query Executers</h3>
+        <p>After the query is built, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let postResults = await postQuery.list();
+          </code>
+        </pre>
+        <p>All the following methods return a promise:</p>
+        <table id="customers">
+          <tr>
+            <th>Methods</th>
+            <th>Description</th>
+            <th style="width: 300px;">Example</th>
+          </tr>
+          <tr>
+            <td>list()</td>
+            <td>lists all results found in the form of array of objects.  </td>
+            <td><code>postQuery.list()</code></td>
+          </tr>
+          <tr>
+            <td>col(column_name)</td>
+            <td>returns an array of values of a certain column.  </td>
+            <td><code>postQuery.col('title')</code></td>
+          </tr>
+          <tr>
+            <td>listAfter(offset)</td>
+            <td>skip an offset amount of values and then list all values after it.  </td>
+            <td><code>postQuery.listAfter(5)</code></td>
+          </tr>
+          <tr>
+            <td>firstOne()</td>
+            <td>returns an object of the first row that meets conditions specified.  </td>
+            <td><code>postQuery.firstOne()</code></td>
+          </tr>
+          <tr>
+            <td>find(id)</td>
+            <td> returns an object of a certain model using it's id.  </td>
+            <td><code>postQuery.find(25)</code></td>
+          </tr>
+          <tr>
+            <td>slice(skip, count)</td>
+            <td>returns a count amount of rows after skipping another amount of rows.  </td>
+            <td><code>postQuery.slice(10, 10)</code></td>
+          </tr>
+
+          <tr>
+            <td>first(count)</td>
+            <td> return the first amount of rows that meets conditions specified.  </td>
+            <td><code>postQuery.first(10)</code></td>
+          </tr>
+          <tr>
+            <td>paginate(perPage, currentPage)</td>
+            <td> paginate through your results by passing rows per page and your current page.  </td>
+            <td><code>postQuery.paginate(10, 2)</code></td>
+          </tr>
+          <tr>
+            <td>chunk(count, callback)</td>
+            <td> instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.  </td>
+            <td><code>postQuery.chunk(50, (rows) => { <br/>
+                //loop through a group of 50s<br/>
+              })</code></td>
+          </tr>
+          <tr>
+            <td>insert()</td>
+            <td> get chained after set(data) to insert data into database.  </td>
+            <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
+          </tr>
+          <tr>
+            <td>update()</td>
+            <td> get chained after set(data) and a group of where() conditions to update certain rows in database.  </td>
+            <td><code>post.set({title: 'sample title', body: 'sample body'}).where(['id', '=', 5]).insert()</code></td>
+          </tr>
+          <tr>
+            <td>delete()</td>
+            <td> get chained after a group of where() conditions to delete certain rows in database.  </td>
+            <td><code>post.where(['id', '=', 5]).delete()</code></td>
+          </tr>
+        </table>
+      </section>
+      <section class="js-section">
+        <h3 class="section__title">Utilites</h3>
+        <p>There are some utility functions that are provided to give your query more flexiblity:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            const { Util } = require('oraios-queries');
+
+            let postQuery = post.select(['title', 'body', 'created_at::date'])
+                .where(["created_at", ">", Util.raw("now() - INTERVAL '30 day'") ]);
+          </code>
+        </pre>
+        <table id="customers">
+          <tr>
+            <th>Function</th>
+            <th>Description</th>
+            <th style="width: 200px;">Example</th>
+          </tr>
+          <tr>
+            <td>raw(sql)</td>
+            <td>added in the value section of a where statement to replace a matched value to native SQL code.</td>
+            <td><code>Util.raw("now() - INTERVAL '30 day'")</code></td>
+          </tr>
+          <tr>
+            <td>distinct(col)</td>
+            <td>added as one of the selected columns in select() method to return only one unique value of this column. Basically, applies <code>DISTINCT ON()</code>.</td>
+            <td><code>Util.distinct('author_id')</code></td>
+          </tr>
+        </table>
+        <p>The utilities is a new section that was just added in the latest version. More function is coming in the future.</p>
+      </section>
+      <section class="js-section">
+        <h3 class="section__title">Code Examples</h3>
+        <p>Inserting new row to database:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let insertedRows = await post.set({title: 'blog post', body: 'Hello World'}).insert();
+            if(insertedRows !== 0){
+                    //success
+            }
+          </code>
+        </pre>
+        <p>Updating certain rows in database:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let affectedRows = await post.set({title: 'another blog post'}).where(['id', '=', 25]).update();
+            if(affectedRows !== 0){
+                  //update successful
+            }
+          </code>
+        </pre>
+        <p>Deleting a row in database:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let rowDeleted = await post.where(['id', '=', 25]).delete();
+            if(rowDeleted !== 0){
+                    //delete successful
+            }
+          </code>
+        </pre>
+        <p>Find a row by id in database:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let row = await post.find(25);
+          </code>
+        </pre>
+        <p>Chunk the data to loop through groups of data:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let row = await post.find(25);
+          </code>
+        </pre>
+        <p>Perform a query with joins:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let postQuery = post.list();
+            await postQuery.chunk(50, (posts) => {
+              for(const post of posts){
+                console.log(`This is post #${post.id}`);
+              }
+            });
+          </code>
+        </pre>
+        <p>Select query with conditions using AND & OR with grouping:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let conditions = nestedConditions = { cond: [] };
+
+            conditions.relation = 'AND';
+            conditions.cond.push(["created_at::date", ">", "2019-01-01" ]);
+            conditions.cond.push(["author_id", "=", 25 ]);
+
+            //include a nested condition
+            nestedConditions.relation = 'OR';
+            nestedConditions.cond.push(['created_at::date', ">", "2019-05-01"]);
+            nestedConditions.cond.push(['created_at::date', "<", "2019-10-01"]);
+
+            //add nested condition into the list of conditions
+            conditions.cond.push(nestedConditions);
+            let postQuery = post.select(['created_at::date', 'count(*) as posts'])
+                  .where(conditions)
+                  .groupBy(['created_at::date'])
+                  .orderBy([{col: 'created_at::date', order: 'desc'}]);
+                  
+            let postRes = await postQuery.list();
+          </code>
+        </pre>
+        <p>The previous statement will produce a query like this:</p>
+        <pre>
+          <code class="language-SQL">
+            SELECT created_at::date, count(*) as posts 
+            FROM posts 
+            WHERE (
+                    created_at::date > "2019-01-01" AND 
+                    author_id, "=", 25 AND
+                    (
+                            created_at::date > "2019-05-01" OR
+                            created_at::date < "2019-10-01"
+                    )
+            ) 
+            GROUP BY created_at::date 
+            ORDER BY created_at::date desc;
+          </code>
+        </pre>
+      </section>
+    </article>
+  </div>
+
+  <script src="js/scribbler.js"></script>
+</body>
+
+</html>
