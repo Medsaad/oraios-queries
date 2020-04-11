@@ -5,9 +5,9 @@
 
 Oraios Queries (formerly [note-db-models](https://www.npmjs.com/package/node-db-models)) is a light-weighted project aims to provide class-based table representation and flexible query experience to help developers to avoid plain string queries that are error-prune once the query start to gets a little long.
 
-### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
+### [Visit Documentation](https://medsaad.github.io/oraios-queries/index.html)
 
-- [Features](#new--future-features)
+- [Features](#features)
 - [Get Started](#get-started)
 - [Code Examples](#code-examples)
 
@@ -72,7 +72,7 @@ let conn = new Connection({
 ```
 That's it. From now on everything will be the same across different connections.n rows in database.
 
-### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
+### [Visit Documentation](https://medsaad.github.io/oraios-queries/doc.html)
 
 ## Code Examples
 - Create a Model:
