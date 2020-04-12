@@ -3,11 +3,11 @@
 ![npm](https://img.shields.io/npm/dw/oraios-queries)
 ![NPM](https://img.shields.io/npm/l/oraios-queries)
 
-Oraios Queries (formerly [note-db-models](https://www.npmjs.com/package/node-db-models)) is a light-weighted project aims to provide class-based table representation and flexible query experience to help developers to avoid plain string queries that are error-prune once the query start to gets a little long.
+Oraios Queries (formerly [node-db-models](https://www.npmjs.com/package/node-db-models)) is a light-weighted project aims to provide class-based table representation and flexible query experience to help developers to avoid plain string queries that are error-prune.
 
-### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
+### [Visit Documentation](https://medsaad.github.io/oraios-queries/index.html)
 
-- [Features](#new--future-features)
+- [Features](#features)
 - [Get Started](#get-started)
 - [Code Examples](#code-examples)
 
@@ -20,20 +20,20 @@ The package is consistently getting enhanced and updated. Your contributions are
 - **Flexible Queries**: Designed to perform complex and nested where statements, ordering and grouping.
 - **Many Options**: Specify certain fields to be selectable by default, allow HTML tags to be stored in database for certain fields.
 - **Pre-defined Query Executers**: Extract data in various ways: list, select one column, first item, slicing, chunking, pagination and more.
-**Light Weighted**: This package is light and can be added on APIs, web workers, .. etc.
+- **Light Weighted**: This package is light and can be added on APIs, web workers, .. etc.
 
 ## Get Started
 Install package using npm:
 ```
-$ npm install --save node-db-models
+$ npm install --save oraios-queries
 ```
 
-Connect to your database using [pg](https://www.npmjs.com/package/pg) or [mysql2](https://www.npmjs.com/package/mysql2) package, then attach your connection with node-db-models:
+Connect to your database using [pg](https://www.npmjs.com/package/pg) or [mysql2](https://www.npmjs.com/package/mysql2) package, then attach your connection with oraios-queries:
 ### For Postgres:
 
 ```javascript
 const Pg = require("pg");
-const { Connection, Model } = require('node-db-models');
+const { Connection, Model } = require('oraios-queries');
 
 let pgModConn = new Pg.Pool({
         host: '127.0.0.1',
@@ -53,7 +53,7 @@ let conn = new Connection({
 ```javascript
 
 const mysql = require('mysql2');
-const { Connection, Model } = require('node-db-models');
+const { Connection, Model } = require('oraios-queries');
 
 const mysqlConn = mysql.createPool({
         host: '127.0.0.1',
@@ -72,7 +72,7 @@ let conn = new Connection({
 ```
 That's it. From now on everything will be the same across different connections.n rows in database.
 
-### [Visit Documentation](https://github.com/Medsaad/oraios-queries)
+### [Visit Documentation](https://medsaad.github.io/oraios-queries/doc.html)
 
 ## Code Examples
 - Create a Model:
