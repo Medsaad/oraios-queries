@@ -122,6 +122,8 @@
               allowHtml = ['body'];
               selectable = ['title', 'body', 'author_id', 'created_at::date'];
               connection = conn;
+              
+              //optional defaul value setup
               defaultValue = {
                 onInsert: {
                     created_at: Util.timestamp(),
