@@ -115,13 +115,22 @@
         </p>
         <pre class="code--block">
           <code class="language-JavaScript">
-            const { Model } = require('oraios-queries');
+            const { Model, Util } = require('oraios-queries');
 
             class Post extends Model {
               tableName = 'posts';
               allowHtml = ['body'];
               selectable = ['title', 'body', 'author_id', 'created_at::date'];
-              connection = conn; //the object created above
+              connection = conn;
+              defaultValue = {
+                onInsert: {
+                    created_at: Util.timestamp(),
+                    updated_at: Util.timestamp()
+                },
+                onUpdate: {
+                    updated_at: Util.timestamp()
+                }
+              }
             }
 
             module.exports = new Post();
@@ -151,6 +160,11 @@
           <tr>
             <td>selectable</td>
             <td>Select those column by default when <code>select()</code> method is not invoked. If not used <code>SELECT *</code> will be implemented.</td>
+            <td>NO</td>
+          </tr>
+          <tr>
+            <td>defaultValue</td>
+            <td>If you want to add values that will be inserted automatically on insert or update, you can use this field. Optimal situation of using this field would be changing or saving <code>created_at</code> and <code>updated_at</code> columns with current timestamp</td>
             <td>NO</td>
           </tr>
         </table>
@@ -318,6 +332,10 @@
             <td>distinct(col)</td>
             <td>added as one of the selected columns in select() method to return only one unique value of this column. Basically, applies <code>DISTINCT ON()</code>.</td>
             <td><code>Util.distinct('author_id')</code></td>
+          </tr>
+          <tr>
+            <td>timestamp(Date date)</td>
+            <td>This utility function returns a formatted timestamp <code>YYYY-MM-dd hh:mm:ss</code> That you can use in all kind of queries</td>
           </tr>
         </table>
         <p>The utilities is a new section that was just added in the latest version. More function is coming in the future.</p>
