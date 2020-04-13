@@ -77,13 +77,26 @@ That's it. From now on everything will be the same across different connections.
 ## Code Examples
 - Create a Model:
 ```javascript
-const { Model } = require('oraios-queries');
+const { Model, Util } = require('oraios-queries');
 
 class Post extends Model {
         tableName = 'posts';
         allowHtml = ['body'];
         selectable = ['title', 'body', 'author_id', 'created_at::date'];
-        connection = conn; //the object created above
+        
+        //the object created above
+        connection = conn;
+        
+        //optional defaul value setup
+        defaultValue = {
+                onInsert: {
+                        created_at: Util.timestamp(),
+                        updated_at: Util.timestamp()
+                },
+                onUpdate: {
+                        updated_at: Util.timestamp()
+                }
+        }
 }
 ```
 - Inserting new row to database:
