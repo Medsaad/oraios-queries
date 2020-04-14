@@ -122,8 +122,9 @@
               allowHtml = ['body'];
               selectable = ['title', 'body', 'author_id', 'created_at::date'];
               connection = conn;
+              primaryKey = 'uuid'; //optional, default value is 'id'
               
-              //optional defaul value setup
+              //optional default values setup
               defaultValue = {
                 onInsert: {
                     created_at: Util.timestamp(),
@@ -167,6 +168,11 @@
           <tr>
             <td>defaultValue</td>
             <td>If you want to add values that will be inserted automatically on insert or update, you can use this field. Optimal situation of using this field would be changing or saving <code>created_at</code> and <code>updated_at</code> columns with current timestamp</td>
+            <td>NO</td>
+          </tr>
+          <tr>
+            <td>primaryKey</td>
+            <td>Identifies the primary key of this table in case it's not <code>id</code>. By default, it is set as <code>id</code>.</td>
             <td>NO</td>
           </tr>
         </table>
@@ -292,7 +298,7 @@
           </tr>
           <tr>
             <td>insert()</td>
-            <td> get chained after set(data) to insert data into database.  </td>
+            <td> get chained after set(data) to insert data into database. The returned value is the id of the inserted row.</td>
             <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
           </tr>
           <tr>
@@ -348,9 +354,9 @@
         </p>
         <pre class="code--block">
           <code class="language-JavaScript">
-            let insertedRows = await post.set({title: 'blog post', body: 'Hello World'}).insert();
-            if(insertedRows !== 0){
-                    //success
+            let insertedId = await post.set({title: 'blog post', body: 'Hello World'}).insert();
+            if(insertedId){
+                //success
             }
           </code>
         </pre>
