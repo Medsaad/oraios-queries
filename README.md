@@ -84,6 +84,9 @@ class Post extends Model {
         allowHtml = ['body'];
         selectable = ['title', 'body', 'author_id', 'created_at::date'];
         
+        //optional, default value is 'id'
+        primaryKey = 'uuid';
+
         //the object created above
         connection = conn;
         
@@ -101,8 +104,8 @@ class Post extends Model {
 ```
 - Inserting new row to database:
 ```javascript
-let insertedRows = await post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
-if(insertedRows !== 0){
+let insertedId = await post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
+if(insertedId){
         //success
 }
 ```
