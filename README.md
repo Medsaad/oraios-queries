@@ -15,10 +15,10 @@ Oraios Queries supports [postgres](https://www.npmjs.com/package/pg) and [mysql2
 
 ## Features
 The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that are developed/being developed:
-- **CRUD Ops**: Insert/Select/Update/Delete Data from Postgresql and MySQL with complex nested where conditions.
+- **CRUD Ops**: Insert/Select/Update/Delete Data from Postgresql and MySQL with flexible nested WHERE conditions.
 - **ORM**: Create class-based models for your tables with built-in features.
-- **Flexible Queries**: Designed to perform complex and nested where statements, ordering and grouping.
-- **Many Options**: Specify certain fields to be selectable by default, allow HTML tags to be stored in database for certain fields.
+- **Flexible Queries**: Designed to perform flexible, nested WHERE statements, ordering and grouping.
+- **Model Settings**: Specify certain fields to be selectable, allow HTML tags to be stored in database for certain fields, add default values on insert and update, and more.
 - **Pre-defined Query Executers**: Extract data in various ways: list, select one column, first item, slicing, chunking, pagination and more.
 - **Light Weighted**: This package is light and can be added on APIs, web workers, .. etc.
 
