@@ -227,7 +227,7 @@
           <tr>
             <td>setMany(values_list)</td>
             <td>a list of key value pairs of data that will be inserted as bulk of rows. Used only with <code>insert</code>.</td>
-            <td><code>set({title: 'another blog post'})</code> </td>
+            <td><code>setMany([{title: 'blog post'}, {title: 'another blog post'}])</code> </td>
           </tr>
           <tr>
             <td>innerJoin(m, l, r)<br/> leftJoin(m, l, r) <br/> rightJoin(m, l, r)</td>
@@ -362,6 +362,19 @@
             let insertedId = await post.set({title: 'blog post', body: 'Hello World'}).insert();
             if(insertedId){
                 //success
+            }
+          </code>
+        </pre>
+        <p>Inserting multiple rows to database:
+        </p>
+        <pre class="code--block">
+          <code class="language-JavaScript">
+            let insertedRows = await post.setMany([
+                    {title: 'blog post', body: '<p>Hello World</p>'},
+                    {title: 'blog post 2', body: '<p>Hello Oraios</p>'}
+                    ]).insert();
+            if(insertedRows > 0){
+                    //success
             }
           </code>
         </pre>
