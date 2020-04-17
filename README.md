@@ -15,7 +15,7 @@ Oraios Queries supports [postgres](https://www.npmjs.com/package/pg) and [mysql2
 
 ## Features
 The package is consistently getting enhanced and updated. Your contributions are always welcome. Here are the functionality that are developed/being developed:
-- **CRUD Ops**: Insert/Select/Update/Delete Data from Postgresql and MySQL with flexible nested WHERE conditions.
+- **CRUD Ops**: Insert, select, update & delete Data from Postgresql and MySQL with flexible nested WHERE conditions.
 - **ORM**: Create class-based models for your tables with built-in features.
 - **Flexible Queries**: Designed to perform flexible, nested WHERE statements, ordering and grouping.
 - **Model Settings**: Specify certain fields to be selectable, allow HTML tags to be stored in database for certain fields, add default values on insert and update, and more.
@@ -106,6 +106,16 @@ class Post extends Model {
 ```javascript
 let insertedId = await post.set({title: 'blog post', body: '<p>Hello World</p>'}).insert();
 if(insertedId){
+        //success
+}
+```
+- Inserting multiple rows to database:
+```javascript
+let insertedRows = await post.setMany([
+        {title: 'blog post', body: '<p>Hello World</p>'},
+        {title: 'blog post 2', body: '<p>Hello Oraios</p>'}
+        ]).insert();
+if(insertedRows > 0){
         //success
 }
 ```
