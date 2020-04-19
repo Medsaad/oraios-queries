@@ -370,8 +370,8 @@
         <pre class="code--block">
           <code class="language-JavaScript">
             let insertedRows = await post.setMany([
-                    {title: 'blog post', body: '<p>Hello World</p>'},
-                    {title: 'blog post 2', body: '<p>Hello Oraios</p>'}
+                    {title: 'blog post', body: 'Hello World'},
+                    {title: 'blog post 2', body: 'Hello Oraios'}
                     ]).insert();
             if(insertedRows > 0){
                     //success
