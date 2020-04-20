@@ -90,7 +90,7 @@ class Post extends Model {
         //the object created above
         connection = conn;
         
-        //optional defaul value setup
+        //optional default value setup
         defaultValue = {
                 onInsert: {
                         created_at: Util.timestamp(),
