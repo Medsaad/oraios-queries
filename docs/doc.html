@@ -309,7 +309,12 @@
           <tr>
             <td>update()</td>
             <td> get chained after set(data) and a group of where() conditions to update certain rows in database.  </td>
-            <td><code>post.set({title: 'sample title', body: 'sample body'}).where(['id', '=', 5]).insert()</code></td>
+            <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
+          </tr>
+          <tr>
+            <td>updateOrInsert()</td>
+            <td> tries to apply an update. If no rows get updated, then it will create a new row with the data to be updated. Make you that you are including all required columns.</td>
+            <td><code>post.set({title: 'sample title', body: 'sample body'}).where(['id', '=', 5]).updateOrInsert()</code></td>
           </tr>
           <tr>
             <td>delete()</td>
