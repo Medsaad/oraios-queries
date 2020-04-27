@@ -152,7 +152,7 @@
           </tr>
           <tr>
             <td>connection</td>
-            <td>pass the connection object after initiating <code>new Connection()</code>.</td>
+            <td>Pass the connection object after initiating <code>new Connection()</code>.</td>
             <td>YES</td>
           </tr>
           <tr>
@@ -201,37 +201,44 @@
           </tr>
           <tr>
             <td>select(columns)</td>
-            <td>passes an array of columns to your query builder.</td>
+            <td>Passes an array of columns to your query builder.</td>
             <td><code>select(['title', 'body', 'created_at::date'])</code></td>
           </tr>
           <tr>
             <td>where(conditions)</td>
-            <td>accept an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are =, ≠, >, ≥, <, ≤, like, ilike, in & not in where the last 2 - in & not in- expects to have array in its value ["id", "in", [1, 2,3]].</td>
-            <td><code>where(["created_at", ">", "2019-01-01" ])</code></td>
+            <td>
+              Accepts 2 cases: 
+              <ul>
+                <li>One condition: this will be an array ["column", "operand", "value" ]. Supported operands are =, ≠, >, ≥, <, ≤, like, ilike, in & not in.</li>
+                <li>Multiple conditions: in this case, it will accept an object with first key is <code>relation</code> which could be 'AND' or 'OR'. The second is <code>cond</code> and this will be an array of conditions like the ones exist in the first case</li>
+              </ul>
+              One of the conditions inside <code>cond</code> could be another object that can contain another relation/cond object and so on.
+            </td>
+            <td><code>where({relation: 'OR',<br/>cond:[<br/>['id', '=', 1], <br/>['id', '=', 1]<br/>]})</code></td>
           </tr>
           <tr>
             <td>orderBy(orderList)</td>
-            <td>accepts an array of objects where you can add a list of order columns and order directions</td>
+            <td>Accepts an array of objects where you can add a list of order columns and order directions</td>
             <td><code>orderBy([{col: 'id', order: 'desc'},{col: 'created_at', order: 'asc'}])</code></td>
           </tr>
           <tr>
             <td>groupBy(groupList)</td>
-            <td>accepts a list of columns you can group by</td>
+            <td>Accepts a list of columns you can group by</td>
             <td><code>groupBy(['author_id', 'post_id'])</code></td>
           </tr>
           <tr>
             <td>set(values)</td>
-            <td>a key value pairs of data that will be inserted or updated. Used only with <code>insert</code> and <code>update</code>.</td>
+            <td>A key value pairs of data that will be inserted or updated. Used only with <code>insert</code> and <code>update</code>.</td>
             <td><code>set({title: 'another blog post'})</code> </td>
           </tr>
           <tr>
             <td>setMany(values_list)</td>
-            <td>a list of key value pairs of data that will be inserted as bulk of rows. Used only with <code>insert</code>.</td>
+            <td>A list of key value pairs of data that will be inserted as bulk of rows. Used only with <code>insert</code>.</td>
             <td><code>setMany([{title: 'blog post'}, {title: 'another blog post'}])</code> </td>
           </tr>
           <tr>
             <td>innerJoin(m, l, r)<br/> leftJoin(m, l, r) <br/> rightJoin(m, l, r)</td>
-            <td> the 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter (m) should be a Model object that you need join with. The second (l) should be the column from the current model and third parameter (r) should be the column from the model that was added in the first parameter.</td>
+            <td>The 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter (m) should be a Model object that you need join with. The second (l) should be the column from the current model and third parameter (r) should be the column from the model that was added in the first parameter.</td>
             <td><code>user.innerJoin(post, 'id', 'post_author')</code></td>
           </tr>
         </table>
@@ -255,70 +262,70 @@
           </tr>
           <tr>
             <td>list()</td>
-            <td>lists all results found in the form of array of objects.  </td>
+            <td>Lists all results found in the form of array of objects.  </td>
             <td><code>postQuery.list()</code></td>
           </tr>
           <tr>
             <td>col(column_name)</td>
-            <td>returns an array of values of a certain column.  </td>
+            <td>Returns an array of values of a certain column.  </td>
             <td><code>postQuery.col('title')</code></td>
           </tr>
           <tr>
             <td>listAfter(offset)</td>
-            <td>skip an offset amount of values and then list all values after it.  </td>
+            <td>Skip an offset amount of values and then list all values after it.  </td>
             <td><code>postQuery.listAfter(5)</code></td>
           </tr>
           <tr>
             <td>firstOne()</td>
-            <td>returns an object of the first row that meets conditions specified.  </td>
+            <td>Returns an object of the first row that meets conditions specified.  </td>
             <td><code>postQuery.firstOne()</code></td>
           </tr>
           <tr>
             <td>find(id)</td>
-            <td> returns an object of a certain model using it's id.  </td>
+            <td>Returns an object of a certain model using it's id.  </td>
             <td><code>postQuery.find(25)</code></td>
           </tr>
           <tr>
             <td>slice(skip, count)</td>
-            <td>returns a count amount of rows after skipping another amount of rows.  </td>
+            <td>Returns a count amount of rows after skipping another amount of rows.  </td>
             <td><code>postQuery.slice(10, 10)</code></td>
           </tr>
 
           <tr>
             <td>first(count)</td>
-            <td> return the first amount of rows that meets conditions specified.  </td>
+            <td>Return the first amount of rows that meets conditions specified.  </td>
             <td><code>postQuery.first(10)</code></td>
           </tr>
           <tr>
             <td>paginate(perPage, currentPage)</td>
-            <td> paginate through your results by passing rows per page and your current page.  </td>
+            <td>Paginate through your results by passing rows per page and your current page.  </td>
             <td><code>postQuery.paginate(10, 2)</code></td>
           </tr>
           <tr>
             <td>chunk(count, callback)</td>
-            <td> instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.  </td>
+            <td>Instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.  </td>
             <td><code>postQuery.chunk(50, (rows) => { <br/>
                 //loop through a group of 50s<br/>
               })</code></td>
           </tr>
           <tr>
             <td>insert()</td>
-            <td> get chained after set(data) to insert data into database. The returned value is the id of the inserted row.</td>
+            <td>Get chained after set(data) to insert data into database. The returned value is the id of the inserted row.</td>
             <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
           </tr>
           <tr>
             <td>update()</td>
-            <td> get chained after set(data) and a group of where() conditions to update certain rows in database.  </td>
+            <td>Get chained after set(data) and a group of where() conditions to update certain rows in database.  </td>
             <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
           </tr>
           <tr>
             <td>updateOrInsert()</td>
-            <td> tries to apply an update. If no rows get updated, then it will create a new row with the data to be updated. Make you that you are including all required columns.</td>
+            <td>Tries to apply an update. If no rows get updated, then it will create a new row with the data to be updated. Make you that you are including all required columns.</td>
             <td><code>post.set({title: 'sample title', body: 'sample body'}).where(['id', '=', 5]).updateOrInsert()</code></td>
           </tr>
           <tr>
             <td>delete()</td>
-            <td> get chained after a group of where() conditions to delete certain rows in database.  </td>
+            <td>Get chained after a group of where() conditions to delete certain rows in database.  </td>
             <td><code>post.where(['id', '=', 5]).delete()</code></td>
           </tr>
         </table>
@@ -377,7 +384,7 @@
             let insertedRows = await post.setMany([
                     {title: 'blog post', body: 'Hello World'},
                     {title: 'blog post 2', body: 'Hello Oraios'}
-                    ]).insert();
+                ]).insert();
             if(insertedRows > 0){
                     //success
             }
@@ -399,7 +406,7 @@
           <code class="language-JavaScript">
             let rowDeleted = await post.where(['id', '=', 25]).delete();
             if(rowDeleted !== 0){
-                    //delete successful
+                //delete successful
             }
           </code>
         </pre>
