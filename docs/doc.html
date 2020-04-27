@@ -209,12 +209,12 @@
             <td>
               Accepts 2 cases: 
               <ul>
-                <li>One condition: this will be an array ["column", "operand", "value" ]. Supported operands are =, ≠, >, ≥, <, ≤, like, ilike, in & not in.</li>
+                <li>One condition: this will be an array ["column", "operand", "value" ]. <br/>Supported operands are =, ≠, >, ≥, <, ≤, like, ilike, in & not in.</li>
                 <li>Multiple conditions: in this case, it will accept an object with first key is <code>relation</code> which could be 'AND' or 'OR'. The second is <code>cond</code> and this will be an array of conditions like the ones exist in the first case</li>
               </ul>
               One of the conditions inside <code>cond</code> could be another object that can contain another relation/cond object and so on.
             </td>
-            <td><code>where({relation: 'OR',<br/>cond:[<br/>['id', '=', 1], <br/>['id', '=', 1]<br/>]})</code></td>
+            <td><code>where({<br/>relation: 'OR',<br/>cond:[<br/>['id', '=', 1], <br/>['id', '=', 1]<br/>]})</code></td>
           </tr>
           <tr>
             <td>orderBy(orderList)</td>
@@ -238,7 +238,13 @@
           </tr>
           <tr>
             <td>innerJoin(m, l, r)<br/> leftJoin(m, l, r) <br/> rightJoin(m, l, r)</td>
-            <td>The 3 methods performs inner, left and right joins (respectively) between the current model and another model. The first parameter (m) should be a Model object that you need join with. The second (l) should be the column from the current model and third parameter (r) should be the column from the model that was added in the first parameter.</td>
+            <td>The 3 methods performs inner, left and right joins (respectively) between the current model and another model. 
+              <ul>
+                <li>(m) should be a Model object that you want join with.</li>
+                <li>(l) should be the column from the current model</li>
+                <li>(r) should be the column from the model that was added in the (m) parameter.</li>
+              </ul>
+            </td>
             <td><code>user.innerJoin(post, 'id', 'post_author')</code></td>
           </tr>
         </table>
@@ -350,12 +356,12 @@
           </tr>
           <tr>
             <td>raw(sql)</td>
-            <td>added in the value section of a where statement to replace a matched value to native SQL code.</td>
+            <td>Added in the value section of a where statement to replace a matched value to native SQL code.</td>
             <td><code>Util.raw("now() - INTERVAL '30 day'")</code></td>
           </tr>
           <tr>
             <td>distinct(col)</td>
-            <td>added as one of the selected columns in select() method to return only one unique value of this column. Basically, applies <code>DISTINCT ON()</code>.</td>
+            <td>Added as one of the selected columns in select() method to return only one unique value of this column. Basically, applies <code>DISTINCT ON()</code>.</td>
             <td><code>Util.distinct('author_id')</code></td>
           </tr>
           <tr>
