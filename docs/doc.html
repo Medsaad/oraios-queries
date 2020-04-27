@@ -206,8 +206,15 @@
           </tr>
           <tr>
             <td>where(conditions)</td>
-            <td>Accepts an array of query conditions that can be attached by 'AND' and 'OR' relations. Supported with comparisons are =, ≠, >, ≥, <, ≤, like, ilike, in & not in where the last 2 - in & not in- expects to have array in its value ["id", "in", [1, 2,3]].</td>
-            <td><code>where(["created_at", ">", "2019-01-01" ])</code></td>
+            <td>
+              Accepts 2 cases: 
+              <ul>
+                <li>One condition: this will be an array ["column", "operand", "value" ]. Supported operands are =, ≠, >, ≥, <, ≤, like, ilike, in & not in.</li>
+                <li>Multiple conditions: in this case, it will accept an object with first key is <code>relation</code> which could be 'AND' or 'OR'. The second is <code>cond</code> and this will be an array of conditions like the ones exist in the first case</li>
+              </ul>
+              One of the conditions inside <code>cond</code> could be another object that can contain another relation/cond object and so on.
+            </td>
+            <td><code>where({relation: 'OR',<br/>cond:[<br/>['id', '=', 1], <br/>['id', '=', 1]<br/>]})</code></td>
           </tr>
           <tr>
             <td>orderBy(orderList)</td>
@@ -377,7 +384,7 @@
             let insertedRows = await post.setMany([
                     {title: 'blog post', body: 'Hello World'},
                     {title: 'blog post 2', body: 'Hello Oraios'}
-                    ]).insert();
+                ]).insert();
             if(insertedRows > 0){
                     //success
             }
@@ -399,7 +406,7 @@
           <code class="language-JavaScript">
             let rowDeleted = await post.where(['id', '=', 25]).delete();
             if(rowDeleted !== 0){
-                    //delete successful
+                //delete successful
             }
           </code>
         </pre>
