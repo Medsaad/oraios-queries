@@ -1,7 +1,7 @@
 {
   "name": "oraios-queries",
   "description": "Models & Query Builder for relational databases",
-  "version": "1.8.7",
+  "version": "1.8.8",
   "repository": "git://github.com/Medsaad/oraios-queries",
   "main": "index.js",
   "author": {

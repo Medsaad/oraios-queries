@@ -42,7 +42,8 @@
       <section class="js-section">
         <h3 class="section__title">Get Started</h3>
         <p>Oraios Queries is a light-weighted project aims to create an ORM for Databases queries (especially Relational
-          Databases that performs flexible WHERE statements) to help developers create model classes for tables and query
+          Databases that performs flexible WHERE statements) to help developers create model classes for tables and
+          query
           them using functions rather than plain string that is error-prune once the query start to gets a little long.
         </p>
         <p>Currenlty, the package supports <a href="https://www.npmjs.com/package/pg">Postgres</a> and <a
@@ -107,7 +108,7 @@
                 });
               </code>
             </pre>
-            <p>Creating an object for the connection enables multiple db connections.</p>
+        <p>Creating an object for the connection enables multiple db connections.</p>
       </section>
       <section class="js-section">
         <h3 class="section__title">Models</h3>
@@ -157,22 +158,27 @@
           </tr>
           <tr>
             <td>allowHtml</td>
-            <td>Oraios strip html tags from all fields before storing to DB. If you do not want that for certain tags include them in this array.</td>
+            <td>Oraios strip html tags from all fields before storing to DB. If you do not want that for certain tags
+              include them in this array.</td>
             <td>NO</td>
           </tr>
           <tr>
             <td>selectable</td>
-            <td>Select those column by default when <code>select()</code> method is not invoked. If not used <code>SELECT *</code> will be implemented.</td>
+            <td>Select those column by default when <code>select()</code> method is not invoked. If not used
+              <code>SELECT *</code> will be implemented.</td>
             <td>NO</td>
           </tr>
           <tr>
             <td>defaultValue</td>
-            <td>If you want to add values that will be inserted automatically on insert or update, you can use this field. Optimal situation of using this field would be changing or saving <code>created_at</code> and <code>updated_at</code> columns with current timestamp</td>
+            <td>If you want to add values that will be inserted automatically on insert or update, you can use this
+              field. Optimal situation of using this field would be changing or saving <code>created_at</code> and
+              <code>updated_at</code> columns with current timestamp</td>
             <td>NO</td>
           </tr>
           <tr>
             <td>primaryKey</td>
-            <td>Identifies the primary key of this table in case it's not <code>id</code>. By default, it is set as <code>id</code>.</td>
+            <td>Identifies the primary key of this table in case it's not <code>id</code>. By default, it is set as
+              <code>id</code>.</td>
             <td>NO</td>
           </tr>
         </table>
@@ -192,7 +198,8 @@
                 ]);
           </code>
         </pre>
-        <p>The above code builds your query, but does not execute it. You are free to chain to add to the query. You can use one of the following:</p>
+        <p>The above code builds your query, but does not execute it. You are free to chain to add to the query. You can
+          use one of the following:</p>
         <table id="customers">
           <tr>
             <th>Methods</th>
@@ -207,12 +214,16 @@
           <tr>
             <td>where(conditions)</td>
             <td>
-              Accepts 2 cases: 
+              Accepts 2 cases:
               <ul>
-                <li>One condition: this will be an array ["column", "operand", "value" ]. <br/>Supported operands are =, ≠, >, ≥, <, ≤, like, ilike, in & not in.</li>
-                <li>Multiple conditions: in this case, it will accept an object with first key is <code>relation</code> which could be 'AND' or 'OR'. The second is <code>cond</code> and this will be an array of conditions like the ones exist in the first case</li>
+                <li>One condition: this will be an array ["column", "operand", "value" ]. <br />Supported operands are
+                  =, ≠, >, ≥, <, ≤, like, ilike, in & not in.</li>
+                <li>Multiple conditions: in this case, it will accept an object with first key is <code>relation</code>
+                  which could be 'AND' or 'OR'. The second is <code>cond</code> and this will be an array of conditions
+                  like the ones exist in the first case</li>
               </ul>
-              One of the conditions inside <code>cond</code> could be another object that can contain another relation/cond object and so on.
+              One of the conditions inside <code>cond</code> could be another object that can contain another
+              relation/cond object and so on.
             </td>
             <td><code>where({<br/>relation: 'OR',<br/>cond:[<br/>['id', '=', 1], <br/>['id', '=', 1]<br/>]})</code></td>
           </tr>
@@ -228,17 +239,20 @@
           </tr>
           <tr>
             <td>set(values)</td>
-            <td>A key value pairs of data that will be inserted or updated. Used only with <code>insert</code> and <code>update</code>.</td>
+            <td>A key value pairs of data that will be inserted or updated. Used only with <code>insert</code> and
+              <code>update</code>.</td>
             <td><code>set({title: 'another blog post'})</code> </td>
           </tr>
           <tr>
             <td>setMany(values_list)</td>
-            <td>A list of key value pairs of data that will be inserted as bulk of rows. Used only with <code>insert</code>.</td>
+            <td>A list of key value pairs of data that will be inserted as bulk of rows. Used only with
+              <code>insert</code>.</td>
             <td><code>setMany([{title: 'blog post'}, {title: 'another blog post'}])</code> </td>
           </tr>
           <tr>
-            <td>innerJoin(m, l, r)<br/> leftJoin(m, l, r) <br/> rightJoin(m, l, r)</td>
-            <td>The 3 methods performs inner, left and right joins (respectively) between the current model and another model. 
+            <td>innerJoin(m, l, r)<br /> leftJoin(m, l, r) <br /> rightJoin(m, l, r)</td>
+            <td>The 3 methods performs inner, left and right joins (respectively) between the current model and another
+              model.
               <ul>
                 <li>(m) should be a Model object that you want join with.</li>
                 <li>(l) should be the column from the current model</li>
@@ -252,7 +266,8 @@
 
       <section class="js-section">
         <h3 class="section__title">Query Executers</h3>
-        <p>After the query is built, you are expected to chain a method that tells the query execution class how do you want the data to be returned.
+        <p>After the query is built, you are expected to chain a method that tells the query execution class how do you
+          want the data to be returned.
         </p>
         <pre class="code--block">
           <code class="language-JavaScript">
@@ -268,70 +283,81 @@
           </tr>
           <tr>
             <td>list()</td>
-            <td>Lists all results found in the form of array of objects.  </td>
+            <td>Lists all results found in the form of array of objects. </td>
             <td><code>postQuery.list()</code></td>
           </tr>
           <tr>
+            <td>count()</td>
+            <td>Counts the number of queried items. </td>
+            <td><code>postQuery.count()</code></td>
+          </tr>
+          <tr>
             <td>col(column_name)</td>
-            <td>Returns an array of values of a certain column.  </td>
+            <td>Returns an array of values of a certain column. </td>
             <td><code>postQuery.col('title')</code></td>
           </tr>
           <tr>
             <td>listAfter(offset)</td>
-            <td>Skip an offset amount of values and then list all values after it.  </td>
+            <td>Skip an offset amount of values and then list all values after it. </td>
             <td><code>postQuery.listAfter(5)</code></td>
           </tr>
           <tr>
             <td>firstOne()</td>
-            <td>Returns an object of the first row that meets conditions specified.  </td>
+            <td>Returns an object of the first row that meets conditions specified. </td>
             <td><code>postQuery.firstOne()</code></td>
           </tr>
           <tr>
             <td>find(id)</td>
-            <td>Returns an object of a certain model using it's id.  </td>
+            <td>Returns an object of a certain model using it's id. </td>
             <td><code>postQuery.find(25)</code></td>
           </tr>
           <tr>
             <td>slice(skip, count)</td>
-            <td>Returns a count amount of rows after skipping another amount of rows.  </td>
+            <td>Returns a count amount of rows after skipping another amount of rows. </td>
             <td><code>postQuery.slice(10, 10)</code></td>
           </tr>
 
           <tr>
             <td>first(count)</td>
-            <td>Return the first amount of rows that meets conditions specified.  </td>
+            <td>Return the first amount of rows that meets conditions specified. </td>
             <td><code>postQuery.first(10)</code></td>
           </tr>
           <tr>
             <td>paginate(perPage, currentPage)</td>
-            <td>Paginate through your results by passing rows per page and your current page.  </td>
+            <td>Paginate through your results by passing rows per page and your current page. </td>
             <td><code>postQuery.paginate(10, 2)</code></td>
           </tr>
           <tr>
             <td>chunk(count, callback)</td>
-            <td>Instead of returning all elements in one chunk, you can process them in pieces using this method. You can pass the amount per chunk and the callback function to specify what you want to do for each chunk.  </td>
+            <td>Instead of returning all elements in one chunk, you can process them in pieces using this method. You
+              can pass the amount per chunk and the callback function to specify what you want to do for each chunk.
+            </td>
             <td><code>postQuery.chunk(50, (rows) => { <br/>
                 //loop through a group of 50s<br/>
               })</code></td>
           </tr>
           <tr>
             <td>insert()</td>
-            <td>Get chained after set(data) to insert data into database. The returned value is the id of the inserted row.</td>
+            <td>Get chained after set(data) to insert data into database. The returned value is the id of the inserted
+              row.</td>
             <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
           </tr>
           <tr>
             <td>update()</td>
-            <td>Get chained after set(data) and a group of where() conditions to update certain rows in database.  </td>
+            <td>Get chained after set(data) and a group of where() conditions to update certain rows in database. </td>
             <td><code>post.set({title: 'sample title', body: 'sample body'}).insert()</code></td>
           </tr>
           <tr>
             <td>updateOrInsert()</td>
-            <td>Tries to apply an update. If no rows get updated, then it will create a new row with the data to be updated. Make you that you are including all required columns.</td>
-            <td><code>post.set({title: 'sample title', body: 'sample body'}).where(['id', '=', 5]).updateOrInsert()</code></td>
+            <td>Tries to apply an update. If no rows get updated, then it will create a new row with the data to be
+              updated. Make you that you are including all required columns.</td>
+            <td>
+              <code>post.set({title: 'sample title', body: 'sample body'}).where(['id', '=', 5]).updateOrInsert()</code>
+            </td>
           </tr>
           <tr>
             <td>delete()</td>
-            <td>Get chained after a group of where() conditions to delete certain rows in database.  </td>
+            <td>Get chained after a group of where() conditions to delete certain rows in database. </td>
             <td><code>post.where(['id', '=', 5]).delete()</code></td>
           </tr>
         </table>
@@ -361,15 +387,18 @@
           </tr>
           <tr>
             <td>distinct(col)</td>
-            <td>Added as one of the selected columns in select() method to return only one unique value of this column. Basically, applies <code>DISTINCT ON()</code>.</td>
+            <td>Added as one of the selected columns in select() method to return only one unique value of this column.
+              Basically, applies <code>DISTINCT ON()</code>.</td>
             <td><code>Util.distinct('author_id')</code></td>
           </tr>
           <tr>
             <td>timestamp(Date date)</td>
-            <td>This utility function returns a formatted timestamp <code>YYYY-MM-dd hh:mm:ss</code> That you can use in all kind of queries</td>
+            <td>This utility function returns a formatted timestamp <code>YYYY-MM-dd hh:mm:ss</code> That you can use in
+              all kind of queries</td>
           </tr>
         </table>
-        <p>The utilities is a new section that was just added in the latest version. More function is coming in the future.</p>
+        <p>The utilities is a new section that was just added in the latest version. More function is coming in the
+          future.</p>
       </section>
       <section class="js-section">
         <h3 class="section__title">Code Examples</h3>
