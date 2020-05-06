@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const Connection = require("./lib/db/connection");
-const Model = require("./lib/model");
+const Connection = require('./lib/db/connection');
+const Model = require('./lib/model');
 const Util = require('./lib/util');
 
 module.exports = { Connection, Model, Util };
